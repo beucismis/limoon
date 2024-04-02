@@ -1,4 +1,4 @@
-![limoon-logo](limoon-logo.png)
+<img alt="limoon-logo" src="limoon-logo.png" height="128"/>
 
 Web scraper base Pythonic API for Ekşi Sözlük.
 
