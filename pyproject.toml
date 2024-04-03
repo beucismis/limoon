@@ -1,12 +1,11 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
 build-backend = "hatchling.build"
 
 [project]
 name = "limoon"
-dynamic = ["version"]
+dynamic = ["version", "readme"]
 description = "Web scraper base Pythonic API for Ekşi Sözlük"
-readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
 keywords = []
@@ -42,3 +41,9 @@ test = "pytest tests/* -v"
 
 [[tool.hatch.envs.all.matrix]]
 python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/markdown"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "README.md"
