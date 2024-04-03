@@ -1,7 +1,49 @@
-<img alt="limoon-logo" src="limoon-logo.png" height="128"/>
+<img alt="limoon-logo" src="https://raw.githubusercontent.com/beucismis/limoon/main/limoon-logo.png" height="128"/>
 
-Web scraper base Pythonic API for Ekşi Sözlük.
+![PyPI - Version](https://img.shields.io/pypi/v/limoon)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/limoon)
+![GitHub License](https://img.shields.io/github/license/beucismis/limoon)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/beucismis/limoon/test.yml?label=test)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/beucismis/limoon/publish.yml?label=publish)
+
+Limoon (`limon-moon`, limon is lemon but Turkish), web scraper base Pythonic API for Ekşi Sözlük. This module can get topics, entries and authors. It also has `debe` and `gündem` page support. Contributions are most welcome!
+
+## Installing
+
+```console
+pip install -U limoon
+```
+
+## Examples
+
+```python
+import limoon
+
+
+topic = limoon.get_topic("richard stallman")
+# Topic(43270)
+list(topic.entrys)
+# [Entry(1091215), Entry(1091227), Entry(2137487), ...]
+dir(topic)
+# [..., 'entrys', 'id', 'page_count', 'path', 'title', 'url']
+
+entry = limoon.get_entry(2878417)
+# Entry(2878417)
+entry.content
+# "programcılıgın 8. harikası"
+dir(entry)
+# [..., 'author_nickname', 'content', 'created', 'edited', 'favorite_count', 'id', 'url']
+
+author = limoon.get_author("ssg")
+# Author(ssg)
+dir(author)
+# [..., 'avatar_url', 'biography', 'follower_count', 'following_count', 'nickname', 'rank', 'total_entry', 'url']
+```
+
+## Documentation
+
+Soon...
 
 ## License
 
-`limoon` is distributed under the terms of the [MIT](LICENSE.txt) license.
+`limoon` is distributed under the terms of the [MIT](LICENSE.txt) license. Also the logo was made by @beucismis.
