@@ -34,10 +34,11 @@ Documentation = "https://github.com/beucismis/limoon#readme"
 path = "src/limoon/__init__.py"
 
 [tool.hatch.envs.default]
-dependencies = ["pytest"]
+dependencies = ["pytest", "pydoc-markdown"]
 
 [tool.hatch.envs.default.scripts]
 test = "pytest tests/* -v"
+doc = "pydoc-markdown -I src --render-toc > DOCUMENTATION.md"
 
 [[tool.hatch.envs.all.matrix]]
 python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
