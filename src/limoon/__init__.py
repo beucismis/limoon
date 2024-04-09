@@ -3,4 +3,4 @@ from limoon.core import (get_agenda, get_author, get_author_rank,
                          search_topic)
 from limoon.model import Author, Entry, Rank, Topic
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"

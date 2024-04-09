@@ -10,6 +10,8 @@ _URL = str
 
 @dataclass
 class Rank:
+    "Rank data class."
+
     name: str
     karma: int
 
@@ -19,6 +21,8 @@ class Rank:
 
 @dataclass
 class Entry:
+    "Entry data class."
+
     id: int
     author_nickname: str
     content: str
@@ -45,6 +49,8 @@ class Entry:
 
 @dataclass
 class Topic:
+    "Topic data class."
+
     id: int
     title: str
     path: str
@@ -61,6 +67,8 @@ class Topic:
 
 @dataclass
 class Author:
+    "Author data class."
+
     nickname: str
     biography: Union[str, None]
     total_entry: int
