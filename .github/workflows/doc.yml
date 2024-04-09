@@ -1,0 +1,31 @@
+name: Build Documentation
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:
+    - uses: actions/checkout@v4
+ 
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install Hatch
+      run: pip install --upgrade hatch
+
+    - name: Build documentation
+      run: hatch run doc
+
+    - name: Git Auto Commit
+      uses: stefanzweifel/git-auto-commit-action@v5.0.0
+      with:
+        commit_message: Update documentation
