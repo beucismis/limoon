@@ -1,16 +1,17 @@
 from http import HTTPStatus
-from typing import Iterator
+from typing import TypeVar, Iterator, Callable
 from urllib.parse import urlparse
 
 from requests_html import HTMLResponse, HTMLSession
 
 from limoon import constant, exception, model, utils
 
+
 # Typings
-_EntryID = int
-_TopicKeywords = str
-_Nickname = str
-_SearchKeywords = str
+EntryID = TypeVar("EntryID", Callable, int)
+TopicKeywords = TypeVar("TopicKeywords", Callable, str)
+Nickname = TypeVar("Nickname", Callable, str)
+SearchKeywords = TypeVar("SearchKeywords", Callable, str)
 
 # Session
 session = HTMLSession()
@@ -20,7 +21,17 @@ def request(endpoint: str) -> HTMLResponse:
     return session.get(constant.BASE_URL + endpoint)
 
 
-def get_topic(topic_keywords: _TopicKeywords, max_entry: int = None) -> model.Topic:
+def get_topic(topic_keywords: TopicKeywords, max_entry: int = None) -> model.Topic:
+    """This function get Ekşi Sözlük topic.
+
+    Arguments:
+    topic_keywords (str): Keywords (or path) of topic to be get.
+    max_entry (int=None): Maximum number of entrys to be get from page.
+
+    Returns:
+    model.Topic (class): Topic data class.
+    """
+
     r = request(constant.TOPIC_ROUTE.format(topic_keywords))
 
     if r.status_code == HTTPStatus.NOT_FOUND:
@@ -39,7 +50,16 @@ def get_topic(topic_keywords: _TopicKeywords, max_entry: int = None) -> model.To
     )
 
 
-def get_entry(entry_id: _EntryID) -> model.Entry:
+def get_entry(entry_id: EntryID) -> model.Entry:
+    """This function get Ekşi Sözlük entry.
+
+    Arguments:
+    entry_id (int): Unique entry identity. 
+
+    Returns:
+    model.Entry (class): Entry data class.
+    """
+
     if not isinstance(entry_id, int):
         raise TypeError
 
@@ -53,7 +73,16 @@ def get_entry(entry_id: _EntryID) -> model.Entry:
     return next(utils.entry_parser(r.html))
 
 
-def get_author(nickname: _Nickname) -> model.Author:
+def get_author(nickname: Nickname) -> model.Author:
+    """This function get Ekşi Sözlük author.
+
+    Arguments:
+    nickname (str): Unique author nickname. 
+
+    Returns:
+    model.Author (class): Author data class.
+    """
+
     r = request(constant.AUTHOR_ROUTE.format(nickname))
 
     if r.status_code == HTTPStatus.NOT_FOUND:
@@ -87,6 +116,16 @@ def get_author_topic():
 
 
 def get_agenda(max_topic: int = None, max_entry: int = None) -> Iterator[model.Topic]:
+    """This function get Ekşi Sözlük agenda (gündem) page.
+
+    Arguments:
+    max_topic (int=None): Maximum number of topics to be get from agenda.
+    max_entry (int=None): Maximum number of entrys to be get from topic.
+
+    Returns:
+    Iterator[model.Topic]: Topic data classes.
+    """
+
     r = request(constant.AGENDA_ROUTE)
 
     if r.status_code != HTTPStatus.OK:
@@ -102,6 +141,15 @@ def get_agenda(max_topic: int = None, max_entry: int = None) -> Iterator[model.T
 
 
 def get_debe(max_entry: int = None) -> Iterator[model.Entry]:
+    """This function get Ekşi Sözlük debe page.
+
+    Arguments:
+    max_entry (int=None): Maximum number of entrys to be get page.
+
+    Returns:
+    Iterator[model.Topic]: Entry data classes.
+    """
+
     r = request(constant.DEBE_ROUTE)
 
     if r.status_code != HTTPStatus.OK:
@@ -115,5 +163,5 @@ def get_debe(max_entry: int = None) -> Iterator[model.Entry]:
         )
 
 
-def search_topic(search_keywords: _SearchKeywords):
+def search_topic(search_keywords: SearchKeywords):
     pass

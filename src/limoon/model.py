@@ -1,16 +1,21 @@
 import re
 from dataclasses import dataclass, field
-from typing import Iterator, Union
+from typing import Iterator, Union, TypeVar, Callable
 
 from limoon import constant
 
 # Typings
-_URL = str
+URL = TypeError("URL", Callable, str)
 
 
 @dataclass
 class Rank:
-    "Rank data class."
+    """Rank data class.
+    
+    Arguments:
+    name (str): Custom rank name.
+    karma (int): Rank karma number.
+    """
 
     name: str
     karma: int
@@ -21,7 +26,17 @@ class Rank:
 
 @dataclass
 class Entry:
-    "Entry data class."
+    """Entry data class.
+    
+    Arguments:
+    id (int): Unique entry identity.
+    author_nickname (str): Author who created entry.
+    content (str): Entry content (with HTML tags).
+    favorite_count (int): Entry favorite count.
+    created (str): Datetime of create entry.
+    edited (str|bool): Datetime of edit entry.
+    url (str): Entry HTTP link.
+    """
 
     id: int
     author_nickname: str
@@ -29,7 +44,7 @@ class Entry:
     favorite_count: int
     created: str = field(init=True)
     edited: Union[str, bool] = field(init=False)
-    url: _URL = field(init=False)
+    url: URL = field(init=False)
 
     def __repr__(self):
         return f"Entry({self.id})"
@@ -49,14 +64,23 @@ class Entry:
 
 @dataclass
 class Topic:
-    "Topic data class."
+    """Topic data class.
+
+    Arguments:
+    id (int): Unique topic identity.
+    title (str): Topic title.
+    path (str): Unique topic path.
+    entrys (class): Entrys written for topic.
+    page_count (int): Topic total page count.
+    url (str): Topic HTTP link.
+    """
 
     id: int
     title: str
     path: str
     entrys: Iterator[Entry]
     page_count: int
-    url: _URL = field(init=False)
+    url: URL = field(init=False)
 
     def __repr__(self):
         return f"Topic({self.id})"
@@ -67,16 +91,27 @@ class Topic:
 
 @dataclass
 class Author:
-    "Author data class."
+    """Author data class.
+
+    Arguments:
+    nickname (str): Unique author nickname.
+    biography (str|None): Author biography (with HTML tags).
+    total_entry (int): Author total entry count.
+    follower_count (int): Author total follower count.
+    following_count (int): Author total following count.
+    avatar_url (str): Author avatar HTTP link.
+    rank (class): Author rank.
+    url (str): Author HTTP link.
+    """
 
     nickname: str
     biography: Union[str, None]
     total_entry: int
     follower_count: int
     following_count: int
-    avatar_url: _URL
+    avatar_url: URL
     rank: Union[Rank, None] = field(init=True)
-    url: _URL = field(init=False)
+    url: URL = field(init=False)
 
     def __repr__(self):
         return f"Author({self.nickname})"
