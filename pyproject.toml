@@ -28,7 +28,7 @@ dependencies = ["requests-html", "lxml==4.9.4"]
 [project.urls]
 Source = "https://github.com/beucismis/limoon"
 Issues = "https://github.com/beucismis/limoon/issues"
-Documentation = "https://github.com/beucismis/limoon#readme"
+Documentation = "https://github.com/beucismis/limoon/DOCUMENTATION.md"
 
 [tool.hatch.version]
 path = "src/limoon/__init__.py"
