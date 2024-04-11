@@ -5,8 +5,9 @@
 ![GitHub License](https://img.shields.io/github/license/beucismis/limoon)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/beucismis/limoon/test.yml?label=test)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/beucismis/limoon/publish.yml?label=publish)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/beucismis/limoon/doc.yml?label=doc)
 
-Limoon (`limon-moon`, limon is lemon but Turkish), web scraper base Pythonic API for Ekşi Sözlük. This module can get topics, entries and authors. It also has `debe` and `gündem` page support. Contributions are most welcome!
+Limoon (`limon-moon`, limon is lemon but Turkish), web scraper base Pythonic API for [Ekşi Sözlük](https://eksisozluk.com). This module can get topics, entries and authors. It also has `debe` and `gündem` page support. Contributions are most welcome!
 
 ## Installing
 
@@ -42,7 +43,7 @@ dir(author)
 
 ## Documentation
 
-Soon...
+Documentation is [here](DOCUMENTATION.md)!
 
 ## License
 
