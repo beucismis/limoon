@@ -9,6 +9,8 @@
   * [get\_topic](#limoon.core.get_topic)
   * [get\_entry](#limoon.core.get_entry)
   * [get\_author](#limoon.core.get_author)
+  * [get\_author\_rank](#limoon.core.get_author_rank)
+  * [get\_author\_topic](#limoon.core.get_author_topic)
   * [get\_agenda](#limoon.core.get_agenda)
   * [get\_debe](#limoon.core.get_debe)
 * [limoon.model](#limoon.model)
@@ -120,6 +122,45 @@ This function get Ekşi Sözlük author.
 
 - `model.Author` _class_ - Author data class.
 
+<a id="limoon.core.get_author_rank"></a>
+
+#### get\_author\_rank
+
+```python
+def get_author_rank(nickname: Nickname) -> model.Rank
+```
+
+This function get Ekşi Sözlük author rank.
+
+**Arguments**:
+
+- `nickname` _str_ - Unique author nickname.
+  
+
+**Returns**:
+
+- `model.Rank` _class_ - Rank data class.
+
+<a id="limoon.core.get_author_topic"></a>
+
+#### get\_author\_topic
+
+```python
+def get_author_topic(nickname: Nickname, max_entry: int = None) -> model.Topic
+```
+
+This function get Ekşi Sözlük author topic.
+
+**Arguments**:
+
+- `nickname` _str_ - Unique author nickname.
+- `max_entry` _int=None_ - Maximum number of entrys to be get from page.
+  
+
+**Returns**:
+
+- `model.Topic` _class_ - Topic data class.
+
 <a id="limoon.core.get_agenda"></a>
 
 #### get\_agenda
@@ -218,7 +259,7 @@ Topic data class.
 - `title` _str_ - Topic title.
 - `path` _str_ - Unique topic path.
 - `entrys` _class_ - Entrys written for topic.
-- `page_count` _int_ - Topic total page count.
+- `page_count` _int|None_ - Topic total page count.
 - `url` _str_ - Topic HTTP link.
 
 <a id="limoon.model.Author"></a>
