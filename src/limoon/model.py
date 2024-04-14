@@ -71,7 +71,7 @@ class Topic:
     title (str): Topic title.
     path (str): Unique topic path.
     entrys (class): Entrys written for topic.
-    page_count (int): Topic total page count.
+    page_count (int|None): Topic total page count.
     url (str): Topic HTTP link.
     """
 
@@ -79,7 +79,7 @@ class Topic:
     title: str
     path: str
     entrys: Iterator[Entry]
-    page_count: int
+    page_count: Union[int, None]
     url: URL = field(init=False)
 
     def __repr__(self):

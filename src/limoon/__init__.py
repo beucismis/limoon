@@ -1,5 +1,6 @@
 from limoon.core import *
 from limoon.model import *
+from limoon.constant import BASE_URL
 
 
 __all__ = (
@@ -15,5 +16,6 @@ __all__ = (
     Entry,
     Rank,
     Topic,
+    BASE_URL,
 )
-__version__ = "0.0.4"
+__version__ = "0.0.5"
