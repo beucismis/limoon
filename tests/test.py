@@ -44,6 +44,26 @@ class TestAPI:
         assert type(author.rank.karma) is int
         assert author.url == "https://eksisozluk.com/biri/ssg"
 
+    def test_get_author_rank(self):
+        author_rank = limoon.get_author_rank("ssg")
+
+        assert type(author_rank) is limoon.Rank
+        assert type(author_rank.name) is str
+        assert type(author_rank.karma) is int
+        assert author_rank.karma > 1 
+
+    def test_get_author_topic(self):
+        author_topic = limoon.get_author_topic("ssg")
+
+        assert type(author_topic) is limoon.Topic
+        assert author_topic.id == 31795
+        assert author_topic.title == "ssg"
+        assert author_topic.path == "ssg--31795"
+        assert len(list(author_topic.entrys)) > 1
+        assert type(list(author_topic.entrys)) is list
+        assert author_topic.page_count > 1
+        assert author_topic.url == "https://eksisozluk.com/ssg--31795"
+
 
 class TestException:
     def test_topic_not_found(self):
