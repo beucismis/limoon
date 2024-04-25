@@ -1,10 +1,6 @@
 # Table of Contents
 
 * [limoon](#limoon)
-* [limoon.exception](#limoon.exception)
-  * [TopicNotFound](#limoon.exception.TopicNotFound)
-  * [EntryNotFound](#limoon.exception.EntryNotFound)
-  * [AuthorNotFound](#limoon.exception.AuthorNotFound)
 * [limoon.core](#limoon.core)
   * [get\_topic](#limoon.core.get_topic)
   * [get\_entry](#limoon.core.get_entry)
@@ -13,51 +9,22 @@
   * [get\_author\_topic](#limoon.core.get_author_topic)
   * [get\_agenda](#limoon.core.get_agenda)
   * [get\_debe](#limoon.core.get_debe)
+* [limoon.utils](#limoon.utils)
+* [limoon.constant](#limoon.constant)
 * [limoon.model](#limoon.model)
   * [Rank](#limoon.model.Rank)
   * [Entry](#limoon.model.Entry)
   * [Topic](#limoon.model.Topic)
   * [Author](#limoon.model.Author)
-* [limoon.constant](#limoon.constant)
-* [limoon.utils](#limoon.utils)
+* [limoon.exception](#limoon.exception)
+  * [TopicNotFound](#limoon.exception.TopicNotFound)
+  * [EntryNotFound](#limoon.exception.EntryNotFound)
+  * [AuthorNotFound](#limoon.exception.AuthorNotFound)
+  * [PageNotFound](#limoon.exception.PageNotFound)
 
 <a id="limoon"></a>
 
 # limoon
-
-<a id="limoon.exception"></a>
-
-# limoon.exception
-
-<a id="limoon.exception.TopicNotFound"></a>
-
-## TopicNotFound Objects
-
-```python
-class TopicNotFound(Exception)
-```
-
-The topic record is not available.
-
-<a id="limoon.exception.EntryNotFound"></a>
-
-## EntryNotFound Objects
-
-```python
-class EntryNotFound(Exception)
-```
-
-The entry record is not available.
-
-<a id="limoon.exception.AuthorNotFound"></a>
-
-## AuthorNotFound Objects
-
-```python
-class AuthorNotFound(Exception)
-```
-
-The author record is not available.
 
 <a id="limoon.core"></a>
 
@@ -69,7 +36,8 @@ The author record is not available.
 
 ```python
 def get_topic(topic_keywords: TopicKeywords,
-              max_entry: int = None) -> model.Topic
+              max_entry: int = None,
+              page: int = 1) -> model.Topic
 ```
 
 This function get Ekşi Sözlük topic.
@@ -77,7 +45,8 @@ This function get Ekşi Sözlük topic.
 **Arguments**:
 
 - `topic_keywords` _str_ - Keywords (or path) of topic to be get.
-- `max_entry` _int=None_ - Maximum number of entrys to be get from page.
+- `max_entry` _int=None_ - Maximum number of entrys get from per page.
+- `page` _int=1_ - Specific topic page.
   
 
 **Returns**:
@@ -154,7 +123,7 @@ This function get Ekşi Sözlük author topic.
 **Arguments**:
 
 - `nickname` _str_ - Unique author nickname.
-- `max_entry` _int=None_ - Maximum number of entrys to be get from page.
+- `max_entry` _int=None_ - Maximum number of entrys get from per page.
   
 
 **Returns**:
@@ -174,8 +143,8 @@ This function get Ekşi Sözlük agenda (gündem) page.
 
 **Arguments**:
 
-- `max_topic` _int=None_ - Maximum number of topics to be get from agenda.
-- `max_entry` _int=None_ - Maximum number of entrys to be get from topic.
+- `max_topic` _int=None_ - Maximum number of topics get from agenda.
+- `max_entry` _int=None_ - Maximum number of entrys get from topic.
   
 
 **Returns**:
@@ -194,12 +163,20 @@ This function get Ekşi Sözlük debe page.
 
 **Arguments**:
 
-- `max_entry` _int=None_ - Maximum number of entrys to be get page.
+- `max_entry` _int=None_ - Maximum number of entrys get per page.
   
 
 **Returns**:
 
 - `Iterator[model.Topic]` - Entry data classes.
+
+<a id="limoon.utils"></a>
+
+# limoon.utils
+
+<a id="limoon.constant"></a>
+
+# limoon.constant
 
 <a id="limoon.model"></a>
 
@@ -284,11 +261,47 @@ Author data class.
 - `rank` _class_ - Author rank.
 - `url` _str_ - Author HTTP link.
 
-<a id="limoon.constant"></a>
+<a id="limoon.exception"></a>
 
-# limoon.constant
+# limoon.exception
 
-<a id="limoon.utils"></a>
+<a id="limoon.exception.TopicNotFound"></a>
 
-# limoon.utils
+## TopicNotFound Objects
+
+```python
+class TopicNotFound(Exception)
+```
+
+The topic record is not available.
+
+<a id="limoon.exception.EntryNotFound"></a>
+
+## EntryNotFound Objects
+
+```python
+class EntryNotFound(Exception)
+```
+
+The entry record is not available.
+
+<a id="limoon.exception.AuthorNotFound"></a>
+
+## AuthorNotFound Objects
+
+```python
+class AuthorNotFound(Exception)
+```
+
+The author record is not available.
+
+<a id="limoon.exception.PageNotFound"></a>
+
+## PageNotFound Objects
+
+```python
+class PageNotFound(Exception)
+```
+
+The page record is not available.
 
