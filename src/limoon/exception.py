@@ -13,3 +13,7 @@ class EntryNotFound(Exception):
 
 class AuthorNotFound(Exception):
     "The author record is not available."
+
+
+class PageNotFound(Exception):
+    "The page record is not available."

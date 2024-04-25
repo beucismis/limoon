@@ -1,11 +1,10 @@
 from http import HTTPStatus
-from typing import TypeVar, Iterator, Callable
+from typing import Callable, Iterator, TypeVar, Union
 from urllib.parse import urlparse
 
 from requests_html import HTMLResponse, HTMLSession
 
 from limoon import constant, exception, model, utils
-
 
 # Typings
 EntryID = TypeVar("EntryID", Callable, int)
@@ -17,22 +16,30 @@ SearchKeywords = TypeVar("SearchKeywords", Callable, str)
 session = HTMLSession()
 
 
-def request(endpoint: str) -> HTMLResponse:
-    return session.get(constant.BASE_URL + endpoint)
+def request(endpoint: str, params: dict = {}) -> HTMLResponse:
+    return session.get(constant.BASE_URL + endpoint, params=params)
 
 
-def get_topic(topic_keywords: TopicKeywords, max_entry: int = None) -> model.Topic:
+def get_topic(
+    topic_keywords: TopicKeywords, max_entry: int = None, page: int = 1
+) -> model.Topic:
     """This function get Ekşi Sözlük topic.
 
     Arguments:
     topic_keywords (str): Keywords (or path) of topic to be get.
-    max_entry (int=None): Maximum number of entrys to be get from page.
+    max_entry (int=None): Maximum number of entrys get from per page.
+    page (int=1): Specific topic page.
 
     Returns:
     model.Topic (class): Topic data class.
     """
 
-    r = request(constant.TOPIC_ROUTE.format(topic_keywords))
+    if not isinstance(max_entry, Union[int, None]):
+        raise TypeError
+    if not isinstance(page, int):
+        raise TypeError
+
+    r = request(constant.TOPIC_ROUTE.format(topic_keywords), params={"p": page})
 
     if r.status_code == HTTPStatus.NOT_FOUND:
         raise exception.TopicNotFound()
@@ -54,7 +61,7 @@ def get_entry(entry_id: EntryID) -> model.Entry:
     """This function get Ekşi Sözlük entry.
 
     Arguments:
-    entry_id (int): Unique entry identity. 
+    entry_id (int): Unique entry identity.
 
     Returns:
     model.Entry (class): Entry data class.
@@ -77,7 +84,7 @@ def get_author(nickname: Nickname) -> model.Author:
     """This function get Ekşi Sözlük author.
 
     Arguments:
-    nickname (str): Unique author nickname. 
+    nickname (str): Unique author nickname.
 
     Returns:
     model.Author (class): Author data class.
@@ -111,7 +118,7 @@ def get_author_rank(nickname: Nickname) -> model.Rank:
     """This function get Ekşi Sözlük author rank.
 
     Arguments:
-    nickname (str): Unique author nickname. 
+    nickname (str): Unique author nickname.
 
     Returns:
     model.Rank (class): Rank data class.
@@ -127,22 +134,23 @@ def get_author_topic(nickname: Nickname, max_entry: int = None) -> model.Topic:
 
     Arguments:
     nickname (str): Unique author nickname.
-    max_entry (int=None): Maximum number of entrys to be get from page.
+    max_entry (int=None): Maximum number of entrys get from per page.
 
     Returns:
     model.Topic (class): Topic data class.
     """
 
     r = request(constant.AUTHOR_TOPIC_ROUTE.format(nickname))
-    
+
     return get_topic(urlparse(r.url).path[1:], max_entry=max_entry)
+
 
 def get_agenda(max_topic: int = None, max_entry: int = None) -> Iterator[model.Topic]:
     """This function get Ekşi Sözlük agenda (gündem) page.
 
     Arguments:
-    max_topic (int=None): Maximum number of topics to be get from agenda.
-    max_entry (int=None): Maximum number of entrys to be get from topic.
+    max_topic (int=None): Maximum number of topics get from agenda.
+    max_entry (int=None): Maximum number of entrys get from topic.
 
     Returns:
     Iterator[model.Topic]: Topic data classes.
@@ -166,7 +174,7 @@ def get_debe(max_entry: int = None) -> Iterator[model.Entry]:
     """This function get Ekşi Sözlük debe page.
 
     Arguments:
-    max_entry (int=None): Maximum number of entrys to be get page.
+    max_entry (int=None): Maximum number of entrys get per page.
 
     Returns:
     Iterator[model.Topic]: Entry data classes.

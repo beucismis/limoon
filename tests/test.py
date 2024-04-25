@@ -17,6 +17,16 @@ class TestAPI:
         assert topic.page_count > 1
         assert topic.url == "https://eksisozluk.com/linux--32084"
 
+    def test_get_topic_page(self):
+        topic = limoon.get_topic("linux--32084", page=42)
+        entrys = list(topic.entrys)
+
+        assert len(entrys) == 10
+        assert type(entrys) is list
+        assert topic.page_count > 1
+        assert entrys[7].author_nickname == "hooker with a penis"
+        assert "sene olmus 2012, ve hala linux sadece çekirdektir." in entrys[7].content
+
     def test_get_entry(self):
         entry = limoon.get_entry(1)
 
@@ -50,7 +60,7 @@ class TestAPI:
         assert type(author_rank) is limoon.Rank
         assert type(author_rank.name) is str
         assert type(author_rank.karma) is int
-        assert author_rank.karma > 1 
+        assert author_rank.karma > 1
 
     def test_get_author_topic(self):
         author_topic = limoon.get_author_topic("ssg")
@@ -69,6 +79,10 @@ class TestException:
     def test_topic_not_found(self):
         with pytest.raises(exception.TopicNotFound):
             limoon.get_topic("böylebirbaslikyok")
+
+    def test_topic_page_not_found(self):
+        with pytest.raises(exception.TopicNotFound):
+            limoon.get_topic("linux--32084", page=123456789)
 
     def test_entry_not_found(self):
         with pytest.raises(exception.EntryNotFound):
