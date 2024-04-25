@@ -34,8 +34,6 @@ def get_topic(
     model.Topic (class): Topic data class.
     """
 
-    if not isinstance(max_entry, Union[int, None]):
-        raise TypeError
     if not isinstance(page, int):
         raise TypeError
 

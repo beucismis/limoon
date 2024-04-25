@@ -17,4 +17,4 @@ __all__ = (
     Topic,
     BASE_URL,
 )
-__version__ = "0.0.6"
+__version__ = "0.0.7"
