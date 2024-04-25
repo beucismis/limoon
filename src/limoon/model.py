@@ -1,6 +1,6 @@
 import re
 from dataclasses import dataclass, field
-from typing import Iterator, Union, TypeVar, Callable
+from typing import Callable, Iterator, TypeVar, Union
 
 from limoon import constant
 
@@ -11,7 +11,7 @@ URL = TypeError("URL", Callable, str)
 @dataclass
 class Rank:
     """Rank data class.
-    
+
     Arguments:
     name (str): Custom rank name.
     karma (int): Rank karma number.
@@ -27,7 +27,7 @@ class Rank:
 @dataclass
 class Entry:
     """Entry data class.
-    
+
     Arguments:
     id (int): Unique entry identity.
     author_nickname (str): Author who created entry.
