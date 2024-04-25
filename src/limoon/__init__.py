@@ -1,7 +1,6 @@
+from limoon.constant import BASE_URL
 from limoon.core import *
 from limoon.model import *
-from limoon.constant import BASE_URL
-
 
 __all__ = (
     get_topic,
@@ -18,4 +17,4 @@ __all__ = (
     Topic,
     BASE_URL,
 )
-__version__ = "0.0.5"
+__version__ = "0.0.6"
