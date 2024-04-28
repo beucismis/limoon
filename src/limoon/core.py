@@ -127,6 +127,27 @@ def get_author_rank(nickname: Nickname) -> model.Rank:
     return model.Rank(name=author.rank.name, karma=author.rank.karma)
 
 
+def get_author_badges(nickname: Nickname) -> Iterator[model.Badge]:
+    """This function get Ekşi Sözlük author badges.
+
+    Arguments:
+    nickname (str): Unique author nickname.
+
+    Returns:
+    Iterator[model.Badge]: Badge data classes.
+    """
+
+    r = request(constant.AUTHOT_BADGES_TOPIC.format(nickname))
+
+    for badge in r.html.find("li.badge-item-otheruser"):
+        if badge.attrs["data-owned"] != "False":
+            yield model.Badge(
+                badge.find("p", first=True).text,  # name
+                badge.find("a", first=True).attrs["data-title"],  # description
+                badge.find("img", first=True).attrs["src"],  # icon_url
+            )
+
+
 def get_author_topic(nickname: Nickname, max_entry: int = None) -> model.Topic:
     """This function get Ekşi Sözlük author topic.
 

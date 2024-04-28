@@ -2,26 +2,10 @@ import re
 from dataclasses import dataclass, field
 from typing import Callable, Iterator, TypeVar, Union
 
-from limoon import constant
+from limoon import constant, core
 
 # Typings
 URL = TypeError("URL", Callable, str)
-
-
-@dataclass
-class Rank:
-    """Rank data class.
-
-    Arguments:
-    name (str): Custom rank name.
-    karma (int): Rank karma number.
-    """
-
-    name: str
-    karma: int
-
-    def __repr__(self):
-        return "Rank()"
 
 
 @dataclass
@@ -90,6 +74,40 @@ class Topic:
 
 
 @dataclass
+class Rank:
+    """Rank data class.
+
+    Arguments:
+    name (str): Custom rank name.
+    karma (int): Rank karma number.
+    """
+
+    name: str
+    karma: int
+
+    def __repr__(self):
+        return "Rank()"
+
+
+@dataclass
+class Badge:
+    """Badge data class.
+
+    Arguments:
+    name (str):
+    description (str):
+    icon_url (str):
+    """
+
+    name: str
+    description: str
+    icon_url: URL
+
+    def __repr__(self):
+        return f"Badge({self.name})"
+
+
+@dataclass
 class Author:
     """Author data class.
 
@@ -101,6 +119,7 @@ class Author:
     following_count (int): Author total following count.
     avatar_url (str): Author avatar HTTP link.
     rank (class): Author rank.
+    badges (class): Author badges.
     url (str): Author HTTP link.
     """
 
@@ -111,6 +130,7 @@ class Author:
     following_count: int
     avatar_url: URL
     rank: Union[Rank, None] = field(init=True)
+    badges: Iterator[Badge] = field(init=False)
     url: URL = field(init=False)
 
     def __repr__(self):
@@ -118,6 +138,7 @@ class Author:
 
     def __post_init__(self):
         self.rank = self._parse_rank(self.rank)
+        self.badges = core.get_author_badges(self.nickname)
         self.url = constant.BASE_URL + constant.AUTHOR_ROUTE.format(self.nickname)
 
     def _parse_rank(self, stuff: Union[str, None]) -> Union[Rank, None]:

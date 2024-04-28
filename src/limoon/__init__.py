@@ -15,6 +15,7 @@ __all__ = (
     Entry,
     Rank,
     Topic,
+    Badge,
     BASE_URL,
 )
-__version__ = "0.0.7"
+__version__ = "0.0.8"
