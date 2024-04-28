@@ -38,12 +38,12 @@ dir(entry)
 author = limoon.get_author("ssg")
 # Author(ssg)
 dir(author)
-# [..., 'avatar_url', 'biography', 'follower_count', 'following_count', 'nickname', 'rank', 'total_entry', 'url']
+# [..., 'avatar_url', 'badges', 'biography', 'follower_count', 'following_count', 'nickname', 'rank', 'total_entry', 'url']
 ```
 
 ## Documentation
 
-Documentation is [here](DOCUMENTATION.md)!
+Documentation is [here](DOCUMENTATION.md). This page is auto generated. Don't edit!
 
 ## License
 
