@@ -6,15 +6,17 @@
   * [get\_entry](#limoon.core.get_entry)
   * [get\_author](#limoon.core.get_author)
   * [get\_author\_rank](#limoon.core.get_author_rank)
+  * [get\_author\_badges](#limoon.core.get_author_badges)
   * [get\_author\_topic](#limoon.core.get_author_topic)
   * [get\_agenda](#limoon.core.get_agenda)
   * [get\_debe](#limoon.core.get_debe)
 * [limoon.utils](#limoon.utils)
 * [limoon.constant](#limoon.constant)
 * [limoon.model](#limoon.model)
-  * [Rank](#limoon.model.Rank)
   * [Entry](#limoon.model.Entry)
   * [Topic](#limoon.model.Topic)
+  * [Rank](#limoon.model.Rank)
+  * [Badge](#limoon.model.Badge)
   * [Author](#limoon.model.Author)
 * [limoon.exception](#limoon.exception)
   * [TopicNotFound](#limoon.exception.TopicNotFound)
@@ -110,6 +112,25 @@ This function get Ekşi Sözlük author rank.
 
 - `model.Rank` _class_ - Rank data class.
 
+<a id="limoon.core.get_author_badges"></a>
+
+#### get\_author\_badges
+
+```python
+def get_author_badges(nickname: Nickname) -> Iterator[model.Badge]
+```
+
+This function get Ekşi Sözlük author badges.
+
+**Arguments**:
+
+- `nickname` _str_ - Unique author nickname.
+  
+
+**Returns**:
+
+- `Iterator[model.Badge]` - Badge data classes.
+
 <a id="limoon.core.get_author_topic"></a>
 
 #### get\_author\_topic
@@ -182,22 +203,6 @@ This function get Ekşi Sözlük debe page.
 
 # limoon.model
 
-<a id="limoon.model.Rank"></a>
-
-## Rank Objects
-
-```python
-@dataclass
-class Rank()
-```
-
-Rank data class.
-
-**Arguments**:
-
-- `name` _str_ - Custom rank name.
-- `karma` _int_ - Rank karma number.
-
 <a id="limoon.model.Entry"></a>
 
 ## Entry Objects
@@ -239,6 +244,39 @@ Topic data class.
 - `page_count` _int|None_ - Topic total page count.
 - `url` _str_ - Topic HTTP link.
 
+<a id="limoon.model.Rank"></a>
+
+## Rank Objects
+
+```python
+@dataclass
+class Rank()
+```
+
+Rank data class.
+
+**Arguments**:
+
+- `name` _str_ - Custom rank name.
+- `karma` _int_ - Rank karma number.
+
+<a id="limoon.model.Badge"></a>
+
+## Badge Objects
+
+```python
+@dataclass
+class Badge()
+```
+
+Badge data class.
+
+**Arguments**:
+
+  name (str):
+  description (str):
+  icon_url (str):
+
 <a id="limoon.model.Author"></a>
 
 ## Author Objects
@@ -259,6 +297,7 @@ Author data class.
 - `following_count` _int_ - Author total following count.
 - `avatar_url` _str_ - Author avatar HTTP link.
 - `rank` _class_ - Author rank.
+- `badges` _class_ - Author badges.
 - `url` _str_ - Author HTTP link.
 
 <a id="limoon.exception"></a>
