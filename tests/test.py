@@ -49,9 +49,6 @@ class TestAPI:
         assert author.follower_count > 1
         assert author.following_count > 1
         assert "https://img.ekstat.com" in author.avatar_url
-        assert type(author.rank) is limoon.Rank
-        assert type(author.rank.name) is str
-        assert type(author.rank.karma) is int
         assert author.url == "https://eksisozluk.com/biri/ssg"
 
     def test_get_author_rank(self):
@@ -61,6 +58,15 @@ class TestAPI:
         assert type(author_rank.name) is str
         assert type(author_rank.karma) is int
         assert author_rank.karma > 1
+
+    def test_get_author_badges(self):
+        author_badges = list(limoon.get_author_badges("ssg"))
+
+        assert type(author_badges) is list
+        assert type(author_badges[0]) is limoon.Badge
+        assert type(author_badges[0].name) is str
+        assert type(author_badges[0].description) is str
+        assert type(author_badges[0].icon_url) is str
 
     def test_get_author_topic(self):
         author_topic = limoon.get_author_topic("ssg")
