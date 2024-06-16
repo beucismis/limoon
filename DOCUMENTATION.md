@@ -1,6 +1,14 @@
 # Table of Contents
 
 * [limoon](#limoon)
+* [limoon.utils](#limoon.utils)
+* [limoon.model](#limoon.model)
+  * [Entry](#limoon.model.Entry)
+  * [Topic](#limoon.model.Topic)
+  * [Rank](#limoon.model.Rank)
+  * [Badge](#limoon.model.Badge)
+  * [Author](#limoon.model.Author)
+* [limoon.constant](#limoon.constant)
 * [limoon.core](#limoon.core)
   * [get\_topic](#limoon.core.get_topic)
   * [get\_entry](#limoon.core.get_entry)
@@ -8,16 +16,9 @@
   * [get\_author\_rank](#limoon.core.get_author_rank)
   * [get\_author\_badges](#limoon.core.get_author_badges)
   * [get\_author\_topic](#limoon.core.get_author_topic)
+  * [get\_author\_last\_entrys](#limoon.core.get_author_last_entrys)
   * [get\_agenda](#limoon.core.get_agenda)
   * [get\_debe](#limoon.core.get_debe)
-* [limoon.utils](#limoon.utils)
-* [limoon.constant](#limoon.constant)
-* [limoon.model](#limoon.model)
-  * [Entry](#limoon.model.Entry)
-  * [Topic](#limoon.model.Topic)
-  * [Rank](#limoon.model.Rank)
-  * [Badge](#limoon.model.Badge)
-  * [Author](#limoon.model.Author)
 * [limoon.exception](#limoon.exception)
   * [TopicNotFound](#limoon.exception.TopicNotFound)
   * [EntryNotFound](#limoon.exception.EntryNotFound)
@@ -27,6 +28,115 @@
 <a id="limoon"></a>
 
 # limoon
+
+<a id="limoon.utils"></a>
+
+# limoon.utils
+
+<a id="limoon.model"></a>
+
+# limoon.model
+
+<a id="limoon.model.Entry"></a>
+
+## Entry Objects
+
+```python
+@dataclass
+class Entry()
+```
+
+Entry data class.
+
+**Arguments**:
+
+- `id` _int_ - Unique entry identity.
+- `author_nickname` _str_ - Author who created entry.
+- `content` _str_ - Entry content (with HTML tags).
+- `favorite_count` _int_ - Entry favorite count.
+- `created` _str_ - Datetime of create entry.
+- `edited` _str|bool_ - Datetime of edit entry.
+- `url` _str_ - Entry HTTP link.
+
+<a id="limoon.model.Topic"></a>
+
+## Topic Objects
+
+```python
+@dataclass
+class Topic()
+```
+
+Topic data class.
+
+**Arguments**:
+
+- `id` _int_ - Unique topic identity.
+- `title` _str_ - Topic title.
+- `path` _str_ - Unique topic path.
+- `entrys` _class_ - Entrys written for topic.
+- `page_count` _int|None_ - Topic total page count.
+- `url` _str_ - Topic HTTP link.
+
+<a id="limoon.model.Rank"></a>
+
+## Rank Objects
+
+```python
+@dataclass
+class Rank()
+```
+
+Rank data class.
+
+**Arguments**:
+
+- `name` _str_ - Custom rank name.
+- `karma` _int_ - Rank karma number.
+
+<a id="limoon.model.Badge"></a>
+
+## Badge Objects
+
+```python
+@dataclass
+class Badge()
+```
+
+Badge data class.
+
+**Arguments**:
+
+  name (str):
+  description (str):
+  icon_url (str):
+
+<a id="limoon.model.Author"></a>
+
+## Author Objects
+
+```python
+@dataclass
+class Author()
+```
+
+Author data class.
+
+**Arguments**:
+
+- `nickname` _str_ - Unique author nickname.
+- `biography` _str|None_ - Author biography (with HTML tags).
+- `total_entry` _int_ - Author total entry count.
+- `follower_count` _int_ - Author total follower count.
+- `following_count` _int_ - Author total following count.
+- `avatar_url` _str_ - Author avatar HTTP link.
+- `rank` _class_ - Author rank.
+- `badges` _class_ - Author badges.
+- `url` _str_ - Author HTTP link.
+
+<a id="limoon.constant"></a>
+
+# limoon.constant
 
 <a id="limoon.core"></a>
 
@@ -151,6 +261,17 @@ This function get Ekşi Sözlük author topic.
 
 - `model.Topic` _class_ - Topic data class.
 
+<a id="limoon.core.get_author_last_entrys"></a>
+
+#### get\_author\_last\_entrys
+
+```python
+def get_author_last_entrys(nickname: Nickname,
+                           page: int = 1) -> Iterator[model.Entry]
+```
+
+
+
 <a id="limoon.core.get_agenda"></a>
 
 #### get\_agenda
@@ -190,115 +311,6 @@ This function get Ekşi Sözlük debe page.
 **Returns**:
 
 - `Iterator[model.Topic]` - Entry data classes.
-
-<a id="limoon.utils"></a>
-
-# limoon.utils
-
-<a id="limoon.constant"></a>
-
-# limoon.constant
-
-<a id="limoon.model"></a>
-
-# limoon.model
-
-<a id="limoon.model.Entry"></a>
-
-## Entry Objects
-
-```python
-@dataclass
-class Entry()
-```
-
-Entry data class.
-
-**Arguments**:
-
-- `id` _int_ - Unique entry identity.
-- `author_nickname` _str_ - Author who created entry.
-- `content` _str_ - Entry content (with HTML tags).
-- `favorite_count` _int_ - Entry favorite count.
-- `created` _str_ - Datetime of create entry.
-- `edited` _str|bool_ - Datetime of edit entry.
-- `url` _str_ - Entry HTTP link.
-
-<a id="limoon.model.Topic"></a>
-
-## Topic Objects
-
-```python
-@dataclass
-class Topic()
-```
-
-Topic data class.
-
-**Arguments**:
-
-- `id` _int_ - Unique topic identity.
-- `title` _str_ - Topic title.
-- `path` _str_ - Unique topic path.
-- `entrys` _class_ - Entrys written for topic.
-- `page_count` _int|None_ - Topic total page count.
-- `url` _str_ - Topic HTTP link.
-
-<a id="limoon.model.Rank"></a>
-
-## Rank Objects
-
-```python
-@dataclass
-class Rank()
-```
-
-Rank data class.
-
-**Arguments**:
-
-- `name` _str_ - Custom rank name.
-- `karma` _int_ - Rank karma number.
-
-<a id="limoon.model.Badge"></a>
-
-## Badge Objects
-
-```python
-@dataclass
-class Badge()
-```
-
-Badge data class.
-
-**Arguments**:
-
-  name (str):
-  description (str):
-  icon_url (str):
-
-<a id="limoon.model.Author"></a>
-
-## Author Objects
-
-```python
-@dataclass
-class Author()
-```
-
-Author data class.
-
-**Arguments**:
-
-- `nickname` _str_ - Unique author nickname.
-- `biography` _str|None_ - Author biography (with HTML tags).
-- `total_entry` _int_ - Author total entry count.
-- `follower_count` _int_ - Author total follower count.
-- `following_count` _int_ - Author total following count.
-- `avatar_url` _str_ - Author avatar HTTP link.
-- `rank` _class_ - Author rank.
-- `badges` _class_ - Author badges.
-- `url` _str_ - Author HTTP link.
 
 <a id="limoon.exception"></a>
 
