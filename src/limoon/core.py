@@ -2,6 +2,7 @@ from http import HTTPStatus
 from typing import Callable, Iterator, TypeVar, Union
 from urllib.parse import urlparse
 
+from fake_useragent import UserAgent
 from requests_html import HTMLResponse, HTMLSession
 
 from limoon import constant, exception, model, utils
@@ -14,10 +15,12 @@ SearchKeywords = TypeVar("SearchKeywords", Callable, str)
 
 # Session
 session = HTMLSession()
+user_agent = UserAgent()
 
 
-def request(endpoint: str, params: dict = {}) -> HTMLResponse:
-    return session.get(constant.BASE_URL + endpoint, params=params)
+def request(endpoint: str, headers: dict = {}, params: dict = {}) -> HTMLResponse:
+    headers["User-Agent"] = user_agent.random
+    return session.get(constant.BASE_URL + endpoint, headers=headers, params=params)
 
 
 def get_topic(
@@ -162,6 +165,22 @@ def get_author_topic(nickname: Nickname, max_entry: int = None) -> model.Topic:
     r = request(constant.AUTHOR_TOPIC_ROUTE.format(nickname))
 
     return get_topic(urlparse(r.url).path[1:], max_entry=max_entry)
+
+
+def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Iterator[model.Entry]:
+    """
+    """
+
+    r = request(
+        constant.AUTHOR_LAST_ENTRYS,
+        headers={"X-Requested-With": "XMLHttpRequest"},
+        params={"nick": nickname, "p": page},
+    )
+
+    topic_list = r.html.find("div#topic", first=True).find("div.topic-item")
+
+    for topic in topic_list:
+        yield get_entry(int(topic.find("li#entry-item", first=True).attrs["data-id"]))
 
 
 def get_agenda(max_topic: int = None, max_entry: int = None) -> Iterator[model.Topic]:
