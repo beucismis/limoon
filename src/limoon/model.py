@@ -4,6 +4,7 @@ from typing import Callable, Iterator, TypeVar, Union
 
 from . import constant, core
 
+
 # Typings
 URL = TypeError("URL", Callable, str)
 
