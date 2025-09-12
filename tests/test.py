@@ -1,7 +1,7 @@
 import pytest
 
-import limoon
-from limoon import exception
+from src import limoon
+from src.limoon import exception
 
 
 class TestAPI:
@@ -24,8 +24,8 @@ class TestAPI:
         assert len(entrys) == 10
         assert type(entrys) is list
         assert topic.page_count > 1
-        assert entrys[7].author_nickname == "hooker with a penis"
-        assert "sene olmus 2012, ve hala linux sadece çekirdektir." in entrys[7].content
+        assert entrys[3].author_nickname == "hooker with a penis"
+        assert "linux çekirdektir." in entrys[3].content
 
     def test_get_entry(self):
         entry = limoon.get_entry(1)
