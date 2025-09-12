@@ -5,6 +5,11 @@ from src.limoon import exception
 
 
 class TestAPI:
+    def test_base_url(self):
+        limoon.BASE_URL = "https://eksisozluk1923.com"
+
+        assert limoon.BASE_URL == "https://eksisozluk1923.com"
+
     def test_get_topic(self):
         topic = limoon.get_topic("linux--32084")
 
