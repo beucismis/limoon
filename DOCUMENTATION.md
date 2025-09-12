@@ -188,7 +188,7 @@ Author data class.
 
 ```python
 def get_topic(topic_keywords: TopicKeywords,
-              max_entry: int = None,
+              max_entry: Optional[int] = None,
               page: int = 1) -> model.Topic
 ```
 
@@ -286,7 +286,8 @@ This function get Ekşi Sözlük author badges.
 #### get\_author\_topic
 
 ```python
-def get_author_topic(nickname: Nickname, max_entry: int = None) -> model.Topic
+def get_author_topic(nickname: Nickname,
+                     max_entry: Optional[int] = None) -> model.Topic
 ```
 
 This function get Ekşi Sözlük author topic.
@@ -317,8 +318,8 @@ def get_author_last_entrys(nickname: Nickname,
 #### get\_agenda
 
 ```python
-def get_agenda(max_topic: int = None,
-               max_entry: int = None) -> Iterator[model.Topic]
+def get_agenda(max_topic: Optional[int] = None,
+               max_entry: Optional[int] = None) -> Iterator[model.Topic]
 ```
 
 This function get Ekşi Sözlük agenda (gündem) page.
@@ -338,7 +339,7 @@ This function get Ekşi Sözlük agenda (gündem) page.
 #### get\_debe
 
 ```python
-def get_debe(max_entry: int = None) -> Iterator[model.Entry]
+def get_debe(max_entry: Optional[int] = None) -> Iterator[model.Entry]
 ```
 
 This function get Ekşi Sözlük debe page.
