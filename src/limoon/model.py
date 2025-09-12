@@ -2,7 +2,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Callable, Iterator, TypeVar, Union
 
-from limoon import constant, core
+from . import constant, core
 
 # Typings
 URL = TypeError("URL", Callable, str)

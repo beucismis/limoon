@@ -2,7 +2,7 @@ from typing import Iterator
 
 from requests_html import HTML
 
-from limoon import model
+from . import model
 
 
 def entry_parser(html: HTML, max_entry: int = None) -> Iterator[model.Entry]:

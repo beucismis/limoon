@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 from fake_useragent import UserAgent
 from requests_html import HTMLResponse, HTMLSession
 
-from limoon import constant, exception, model, utils
+from . import constant, exception, model, utils
 
 # Typings
 EntryID = TypeVar("EntryID", Callable, int)
@@ -168,8 +168,7 @@ def get_author_topic(nickname: Nickname, max_entry: int = None) -> model.Topic:
 
 
 def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Iterator[model.Entry]:
-    """
-    """
+    """ """
 
     r = request(
         constant.AUTHOR_LAST_ENTRYS,
