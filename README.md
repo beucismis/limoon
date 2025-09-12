@@ -1,4 +1,4 @@
-<img alt="limoon-logo" src="https://raw.githubusercontent.com/beucismis/limoon/main/limoon-logo.png" height="128"/>
+<img height="128" src="https://github.com/user-attachments/assets/4c1f51e0-a7e8-47f3-b311-d828a6765b09" alt="limoon-logo" />
 
 ![PyPI - Version](https://img.shields.io/pypi/v/limoon)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/limoon)
@@ -11,7 +11,7 @@ Limoon (`limon-moon`, limon is lemon but Turkish), web scraper base Pythonic API
 
 ## Installing
 
-```console
+```
 pip install -U limoon
 ```
 
