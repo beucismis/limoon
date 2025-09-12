@@ -2,13 +2,17 @@
 
 * [limoon](#limoon)
 * [limoon.utils](#limoon.utils)
+* [limoon.exception](#limoon.exception)
+  * [TopicNotFound](#limoon.exception.TopicNotFound)
+  * [EntryNotFound](#limoon.exception.EntryNotFound)
+  * [AuthorNotFound](#limoon.exception.AuthorNotFound)
+  * [PageNotFound](#limoon.exception.PageNotFound)
 * [limoon.model](#limoon.model)
   * [Entry](#limoon.model.Entry)
   * [Topic](#limoon.model.Topic)
   * [Rank](#limoon.model.Rank)
   * [Badge](#limoon.model.Badge)
   * [Author](#limoon.model.Author)
-* [limoon.constant](#limoon.constant)
 * [limoon.core](#limoon.core)
   * [get\_topic](#limoon.core.get_topic)
   * [get\_entry](#limoon.core.get_entry)
@@ -19,11 +23,7 @@
   * [get\_author\_last\_entrys](#limoon.core.get_author_last_entrys)
   * [get\_agenda](#limoon.core.get_agenda)
   * [get\_debe](#limoon.core.get_debe)
-* [limoon.exception](#limoon.exception)
-  * [TopicNotFound](#limoon.exception.TopicNotFound)
-  * [EntryNotFound](#limoon.exception.EntryNotFound)
-  * [AuthorNotFound](#limoon.exception.AuthorNotFound)
-  * [PageNotFound](#limoon.exception.PageNotFound)
+* [limoon.constant](#limoon.constant)
 
 <a id="limoon"></a>
 
@@ -32,6 +32,50 @@
 <a id="limoon.utils"></a>
 
 # limoon.utils
+
+<a id="limoon.exception"></a>
+
+# limoon.exception
+
+<a id="limoon.exception.TopicNotFound"></a>
+
+## TopicNotFound Objects
+
+```python
+class TopicNotFound(Exception)
+```
+
+The topic record is not available.
+
+<a id="limoon.exception.EntryNotFound"></a>
+
+## EntryNotFound Objects
+
+```python
+class EntryNotFound(Exception)
+```
+
+The entry record is not available.
+
+<a id="limoon.exception.AuthorNotFound"></a>
+
+## AuthorNotFound Objects
+
+```python
+class AuthorNotFound(Exception)
+```
+
+The author record is not available.
+
+<a id="limoon.exception.PageNotFound"></a>
+
+## PageNotFound Objects
+
+```python
+class PageNotFound(Exception)
+```
+
+The page record is not available.
 
 <a id="limoon.model"></a>
 
@@ -133,10 +177,6 @@ Author data class.
 - `rank` _class_ - Author rank.
 - `badges` _class_ - Author badges.
 - `url` _str_ - Author HTTP link.
-
-<a id="limoon.constant"></a>
-
-# limoon.constant
 
 <a id="limoon.core"></a>
 
@@ -312,47 +352,7 @@ This function get Ekşi Sözlük debe page.
 
 - `Iterator[model.Topic]` - Entry data classes.
 
-<a id="limoon.exception"></a>
+<a id="limoon.constant"></a>
 
-# limoon.exception
-
-<a id="limoon.exception.TopicNotFound"></a>
-
-## TopicNotFound Objects
-
-```python
-class TopicNotFound(Exception)
-```
-
-The topic record is not available.
-
-<a id="limoon.exception.EntryNotFound"></a>
-
-## EntryNotFound Objects
-
-```python
-class EntryNotFound(Exception)
-```
-
-The entry record is not available.
-
-<a id="limoon.exception.AuthorNotFound"></a>
-
-## AuthorNotFound Objects
-
-```python
-class AuthorNotFound(Exception)
-```
-
-The author record is not available.
-
-<a id="limoon.exception.PageNotFound"></a>
-
-## PageNotFound Objects
-
-```python
-class PageNotFound(Exception)
-```
-
-The page record is not available.
+# limoon.constant
 
