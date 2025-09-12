@@ -1,4 +1,8 @@
+<p align="center" width="100%">
 <img height="128" src="https://github.com/user-attachments/assets/4c1f51e0-a7e8-47f3-b311-d828a6765b09" alt="limoon-logo" />
+</p>
+
+Limoon (`limon-moon`, limon is lemon but Turkish), web scraper base Pythonic API for [Ekşi Sözlük](https://eksisozluk.com). This module can get topics, entries and authors. It also has `debe` and `gündem` page support. Contributions are most welcome!
 
 ![PyPI - Version](https://img.shields.io/pypi/v/limoon)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/limoon)
@@ -6,8 +10,6 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/beucismis/limoon/test.yml?label=test)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/beucismis/limoon/publish.yml?label=publish)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/beucismis/limoon/doc.yml?label=doc)
-
-Limoon (`limon-moon`, limon is lemon but Turkish), web scraper base Pythonic API for [Ekşi Sözlük](https://eksisozluk.com). This module can get topics, entries and authors. It also has `debe` and `gündem` page support. Contributions are most welcome!
 
 ## Installing
 
