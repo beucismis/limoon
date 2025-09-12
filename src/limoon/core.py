@@ -1,11 +1,13 @@
 from http import HTTPStatus
-from typing import Callable, Iterator, TypeVar, Union
+from typing import Callable, Iterator, TypeVar, Optional, Union
 from urllib.parse import urlparse
 
+import requests
 from fake_useragent import UserAgent
 from requests_html import HTMLResponse, HTMLSession
 
 from . import constant, exception, model, utils
+
 
 # Typings
 EntryID = TypeVar("EntryID", Callable, int)
@@ -18,13 +20,18 @@ session = HTMLSession()
 user_agent = UserAgent()
 
 
-def request(endpoint: str, headers: dict = {}, params: dict = {}) -> HTMLResponse:
-    headers["User-Agent"] = user_agent.random
+def request(endpoint: str, headers: dict = {}, params: dict = {}) -> requests.Response:
+    headers = {
+        "User-Agent": user_agent.random,
+        "Accept-Language": "en-US,en;q=0.5",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    }
     return session.get(constant.BASE_URL + endpoint, headers=headers, params=params)
 
 
 def get_topic(
-    topic_keywords: TopicKeywords, max_entry: int = None, page: int = 1
+    topic_keywords: TopicKeywords, max_entry: Optional[int] = None, page: int = 1
 ) -> model.Topic:
     """This function get Ekşi Sözlük topic.
 
@@ -151,7 +158,7 @@ def get_author_badges(nickname: Nickname) -> Iterator[model.Badge]:
             )
 
 
-def get_author_topic(nickname: Nickname, max_entry: int = None) -> model.Topic:
+def get_author_topic(nickname: Nickname, max_entry: Optional[int] = None) -> model.Topic:
     """This function get Ekşi Sözlük author topic.
 
     Arguments:
@@ -182,7 +189,7 @@ def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Iterator[model.
         yield get_entry(int(topic.find("li#entry-item", first=True).attrs["data-id"]))
 
 
-def get_agenda(max_topic: int = None, max_entry: int = None) -> Iterator[model.Topic]:
+def get_agenda(max_topic: Optional[int] = None, max_entry: Optional[int] = None) -> Iterator[model.Topic]:
     """This function get Ekşi Sözlük agenda (gündem) page.
 
     Arguments:
@@ -207,7 +214,7 @@ def get_agenda(max_topic: int = None, max_entry: int = None) -> Iterator[model.T
         )
 
 
-def get_debe(max_entry: int = None) -> Iterator[model.Entry]:
+def get_debe(max_entry: Optional[int] = None) -> Iterator[model.Entry]:
     """This function get Ekşi Sözlük debe page.
 
     Arguments:
