@@ -8,6 +8,7 @@
   * [AuthorNotFound](#limoon.exception.AuthorNotFound)
   * [PageNotFound](#limoon.exception.PageNotFound)
   * [SearchResultNotFound](#limoon.exception.SearchResultNotFound)
+* [limoon.\_\_about\_\_](#limoon.__about__)
 * [limoon.model](#limoon.model)
   * [Entry](#limoon.model.Entry)
   * [Topic](#limoon.model.Topic)
@@ -91,6 +92,10 @@ class SearchResultNotFound(Exception)
 ```
 
 Raised when no search results are found.
+
+<a id="limoon.__about__"></a>
+
+# limoon.\_\_about\_\_
 
 <a id="limoon.model"></a>
 
