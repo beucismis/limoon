@@ -14,6 +14,8 @@
   * [Rank](#limoon.model.Rank)
   * [Badge](#limoon.model.Badge)
   * [Author](#limoon.model.Author)
+  * [Agenda](#limoon.model.Agenda)
+  * [Debe](#limoon.model.Debe)
   * [SearchResult](#limoon.model.SearchResult)
 * [limoon.core](#limoon.core)
   * [get\_topic](#limoon.core.get_topic)
@@ -111,8 +113,9 @@ Entry data class.
 - `author_nickname` _str_ - Author who created entry.
 - `content` _str_ - Entry content (with HTML tags).
 - `favorite_count` _int_ - Entry favorite count.
-- `created` _str_ - Datetime of create entry.
-- `edited` _str|bool_ - Datetime of edit entry.
+- `date` _str_ - Entry sting date.
+- `created` _datetime_ - Datetime object of create entry.
+- `edited` _datetime|bool_ - Datetime object of edit entry.
 - `url` _str_ - Entry HTTP link.
 
 <a id="limoon.model.Topic"></a>
@@ -131,7 +134,6 @@ Topic data class.
 - `id` _int_ - Unique topic identity.
 - `title` _str_ - Topic title.
 - `path` _str_ - Unique topic path.
-- `entrys` _class_ - Entrys written for topic.
 - `page_count` _int|None_ - Topic total page count.
 - `url` _str_ - Topic HTTP link.
 
@@ -191,6 +193,41 @@ Author data class.
 - `badges` _class_ - Author badges.
 - `url` _str_ - Author HTTP link.
 
+<a id="limoon.model.Agenda"></a>
+
+## Agenda Objects
+
+```python
+@dataclass
+class Agenda()
+```
+
+Agenda page data class.
+
+**Arguments**:
+
+- `topic_title` _str_ - Topic title.
+- `entry_id` _int_ - Unique topic path.
+- `topic_entry_count` _str_ - Topic total entry count.
+- `topic_url` _URL_ - Topic HTTP link.
+
+<a id="limoon.model.Debe"></a>
+
+## Debe Objects
+
+```python
+@dataclass
+class Debe()
+```
+
+Depe page data class.
+
+**Arguments**:
+
+- `topic_title` _str_ - Topic title.
+- `entry_id` _int_ - Unique entry id.
+- `entry_url` _URL_ - Entry HTTP link.
+
 <a id="limoon.model.SearchResult"></a>
 
 ## SearchResult Objects
@@ -218,9 +255,7 @@ SearchResult data class.
 #### get\_topic
 
 ```python
-def get_topic(topic_keywords: TopicKeywords,
-              max_entry: Optional[int] = None,
-              page: int = 1) -> model.Topic
+def get_topic(topic_keywords: TopicKeywords, page: int = 1) -> model.Topic
 ```
 
 This function get Ekşi Sözlük topic.
@@ -228,7 +263,6 @@ This function get Ekşi Sözlük topic.
 **Arguments**:
 
 - `topic_keywords` _str_ - Keywords (or path) of topic to be get.
-- `max_entry` _int=None_ - Maximum number of entrys get from per page.
 - `page` _int=1_ - Specific topic page.
   
 
@@ -317,8 +351,7 @@ This function get Ekşi Sözlük author badges.
 #### get\_author\_topic
 
 ```python
-def get_author_topic(nickname: Nickname,
-                     max_entry: Optional[int] = None) -> model.Topic
+def get_author_topic(nickname: Nickname) -> model.Topic
 ```
 
 This function get Ekşi Sözlük author topic.
@@ -326,7 +359,6 @@ This function get Ekşi Sözlük author topic.
 **Arguments**:
 
 - `nickname` _str_ - Unique author nickname.
-- `max_entry` _int=None_ - Maximum number of entrys get from per page.
   
 
 **Returns**:
@@ -349,8 +381,7 @@ def get_author_last_entrys(nickname: Nickname,
 #### get\_agenda
 
 ```python
-def get_agenda(max_topic: Optional[int] = None,
-               max_entry: Optional[int] = None) -> Iterator[model.Topic]
+def get_agenda(max_topic: Optional[int] = None) -> Iterator[model.Agenda]
 ```
 
 This function get Ekşi Sözlük agenda (gündem) page.
@@ -358,31 +389,25 @@ This function get Ekşi Sözlük agenda (gündem) page.
 **Arguments**:
 
 - `max_topic` _int=None_ - Maximum number of topics get from agenda.
-- `max_entry` _int=None_ - Maximum number of entrys get from topic.
   
 
 **Returns**:
 
-- `Iterator[model.Topic]` - Topic data classes.
+- `Iterator[model.Agenda]` - Agenda data classes.
 
 <a id="limoon.core.get_debe"></a>
 
 #### get\_debe
 
 ```python
-def get_debe(max_entry: Optional[int] = None) -> Iterator[model.Entry]
+def get_debe() -> Iterator[model.Debe]
 ```
 
 This function get Ekşi Sözlük debe page.
 
-**Arguments**:
-
-- `max_entry` _int=None_ - Maximum number of entrys get per page.
-  
-
 **Returns**:
 
-- `Iterator[model.Topic]` - Entry data classes.
+- `Iterator[model.Debe]` - Entry data classes.
 
 <a id="limoon.core.get_search_topic"></a>
 
