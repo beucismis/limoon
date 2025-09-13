@@ -23,6 +23,10 @@ pip install -U limoon
 import limoon
 
 
+limoon.BASE_URL = "https://eksisozluk1923.com"
+print(limoon.BASE_URL)
+# 'https://eksisozluk1923.com'
+
 topic = limoon.get_topic("richard stallman")
 # Topic(43270)
 list(topic.entrys)
@@ -33,7 +37,7 @@ dir(topic)
 entry = limoon.get_entry(2878417)
 # Entry(2878417)
 entry.content
-# "programcılıgın 8. harikası"
+# 'programcılıgın 8. harikası'
 dir(entry)
 # [..., 'author_nickname', 'content', 'created', 'edited', 'favorite_count', 'id', 'url']
 
@@ -41,6 +45,10 @@ author = limoon.get_author("ssg")
 # Author(ssg)
 dir(author)
 # [..., 'avatar_url', 'badges', 'biography', 'follower_count', 'following_count', 'nickname', 'rank', 'total_entry', 'url']
+
+search_result = limoon.get_search_topic("linux")
+list(search_result)
+# [SearchResult(linux), SearchResult(linux mint), SearchResult(arch linux), SearchResult(linux ile windows karşılaştırması), SearchResult(linux kullanabilen kız), ...]
 ```
 
 ## Documentation
