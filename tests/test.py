@@ -7,7 +7,6 @@ from src.limoon import exception
 class TestAPI:
     def test_base_url(self):
         limoon.BASE_URL = "https://eksisozluk1923.com"
-
         assert limoon.BASE_URL == "https://eksisozluk1923.com"
 
     def test_get_topic(self):
@@ -84,6 +83,15 @@ class TestAPI:
         assert type(list(author_topic.entrys)) is list
         assert author_topic.page_count > 1
         assert author_topic.url == "https://eksisozluk.com/ssg--31795"
+
+    def test_get_search_topic(self):
+        search_result = list(limoon.get_search_topic("linux"))[0]
+
+        assert type(search_result) is limoon.SearchResult
+        assert search_result.topic_title == "linux"
+        assert search_result.topic_path == "linux--32084"
+        assert type(search_result.topic_entry_count) is str
+        assert search_result.topic_url == "https://eksisozluk.com/linux--32084"
 
 
 class TestException:
