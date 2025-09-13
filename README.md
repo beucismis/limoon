@@ -47,6 +47,7 @@ dir(author)
 # [..., 'avatar_url', 'badges', 'biography', 'follower_count', 'following_count', 'nickname', 'rank', 'total_entry', 'url']
 
 search_result = limoon.get_search_topic("linux")
+# Iterator[SearchResult]
 list(search_result)
 # [SearchResult(linux), SearchResult(linux mint), SearchResult(arch linux), SearchResult(linux ile windows karşılaştırması), SearchResult(linux kullanabilen kız), ...]
 ```
