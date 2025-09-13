@@ -134,6 +134,7 @@ Topic data class.
 - `id` _int_ - Unique topic identity.
 - `title` _str_ - Topic title.
 - `path` _str_ - Unique topic path.
+- `entrys` _Iterator[Entry]_ - Topic total entrys per page.
 - `page_count` _int|None_ - Topic total page count.
 - `url` _str_ - Topic HTTP link.
 
@@ -206,10 +207,10 @@ Agenda page data class.
 
 **Arguments**:
 
-- `topic_title` _str_ - Topic title.
-- `entry_id` _int_ - Unique topic path.
-- `topic_entry_count` _str_ - Topic total entry count.
-- `topic_url` _URL_ - Topic HTTP link.
+- `title` _str_ - Topic title.
+- `path` _int_ - Unique topic path.
+- `entry_count` _str_ - Topic total entry count.
+- `url` _URL_ - Topic HTTP link.
 
 <a id="limoon.model.Debe"></a>
 
@@ -225,8 +226,8 @@ Depe page data class.
 **Arguments**:
 
 - `topic_title` _str_ - Topic title.
-- `entry_id` _int_ - Unique entry id.
-- `entry_url` _URL_ - Entry HTTP link.
+- `id` _int_ - Unique entry id.
+- `url` _URL_ - Entry HTTP link.
 
 <a id="limoon.model.SearchResult"></a>
 
@@ -241,10 +242,10 @@ SearchResult data class.
 
 **Arguments**:
 
-- `topic_title` _str_ - Topic title.
-- `topic_path` _str_ - Unique topic path.
-- `topic_entry_count` _str|None_ - Topic total entry count.
-- `topic_url` _URL_ - Topic HTTP link.
+- `title` _str_ - Topic title.
+- `path` _str_ - Unique topic path.
+- `entry_count` _str|None_ - Topic total entry count.
+- `url` _URL_ - Topic HTTP link.
 
 <a id="limoon.core"></a>
 
@@ -255,7 +256,9 @@ SearchResult data class.
 #### get\_topic
 
 ```python
-def get_topic(topic_keywords: TopicKeywords, page: int = 1) -> model.Topic
+def get_topic(topic_keywords: TopicKeywords,
+              page: int = 1,
+              max_entry: Optional[int] = None) -> model.Topic
 ```
 
 This function get Ekşi Sözlük topic.
@@ -264,6 +267,7 @@ This function get Ekşi Sözlük topic.
 
 - `topic_keywords` _str_ - Keywords (or path) of topic to be get.
 - `page` _int=1_ - Specific topic page.
+- `max_entry` _int|None_ - Max entry per topic.
   
 
 **Returns**:
