@@ -13,13 +13,16 @@ AUTHOR_ROUTE: Final = "/biri/{}"
 AUTHOR_TOPIC_ROUTE: Final = AUTHOR_ROUTE + "/usertopic"
 AUTHOT_BADGES_TOPIC: Final = "/rozetler/{}"
 AUTHOR_LAST_ENTRYS = "/son-entryleri"
-AGENDA_ROUTE: Final = "/basliklar/gundem"
+AGENDA_ROUTE: Final = "/basliklar/gundem?_=1757793708867"
 DEBE_ROUTE: Final = "/debe"
 SEARCH_ROUTE: Final = "/basliklar/ara"
 
 HEADERS = {
+    "Connection": "keep-alive",
+    "Alt-Used": "eksisozluk.com",
     "User-Agent": UserAgent().random,
-    "Accept-Language": "en-US,en;q=0.5",
-    "Accept-Encoding": "gzip, deflate, br",
+    "X-Requested-With": "XMLHttpRequest",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Accept-Language": "tr-TR,tr;q=0.8,en-US;q=0.5,en;q=0.3",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 }

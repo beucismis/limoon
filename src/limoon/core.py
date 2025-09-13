@@ -20,7 +20,9 @@ session = HTMLSession()
 
 def request(endpoint: str, headers: dict = {}, params: dict = {}) -> requests.Response:
     return session.get(
-        constant.BASE_URL + endpoint, headers=constant.HEADERS, params=params
+        constant.BASE_URL + endpoint,
+        params=params,
+        headers=constant.HEADERS,
     )
 
 
@@ -168,7 +170,6 @@ def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Iterator[model.
 
     r = request(
         constant.AUTHOR_LAST_ENTRYS,
-        headers={"X-Requested-With": "XMLHttpRequest"},
         params={"nick": nickname, "p": page},
     )
 
