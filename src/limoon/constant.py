@@ -1,5 +1,6 @@
 from typing import Final
 
+
 # Ekşi Sözlük Base URL
 BASE_URL = "https://eksisozluk.com"
 

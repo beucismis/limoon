@@ -158,7 +158,9 @@ def get_author_badges(nickname: Nickname) -> Iterator[model.Badge]:
             )
 
 
-def get_author_topic(nickname: Nickname, max_entry: Optional[int] = None) -> model.Topic:
+def get_author_topic(
+    nickname: Nickname, max_entry: Optional[int] = None
+) -> model.Topic:
     """This function get Ekşi Sözlük author topic.
 
     Arguments:
@@ -189,7 +191,9 @@ def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Iterator[model.
         yield get_entry(int(topic.find("li#entry-item", first=True).attrs["data-id"]))
 
 
-def get_agenda(max_topic: Optional[int] = None, max_entry: Optional[int] = None) -> Iterator[model.Topic]:
+def get_agenda(
+    max_topic: Optional[int] = None, max_entry: Optional[int] = None
+) -> Iterator[model.Topic]:
     """This function get Ekşi Sözlük agenda (gündem) page.
 
     Arguments:
@@ -237,5 +241,34 @@ def get_debe(max_entry: Optional[int] = None) -> Iterator[model.Entry]:
         )
 
 
-def search_topic(search_keywords: SearchKeywords):
-    raise NotImplementedError
+def get_search_topic(keywords: SearchKeywords) -> Iterator[model.SearchResult]:
+    """This function get Ekşi Sözlük search topic page.
+
+    Arguments:
+    keywords (SearchKeywords): Search keywords.
+
+    Returns:
+    Iterator[model.SearchResult]: SearchResult data classes.
+    """
+
+    r = request(
+        constant.SEARCH_ROUTE,
+        params={
+            "SearchForm.Keywords": keywords,
+            "SearchForm.NiceOnly": False,
+            "SearchForm.SortOrder": "Count",
+        },
+    )
+    total_topic = r.html.find("section#content-body", first=True)
+
+    if total_topic.find("p")[-1].text == exception.SEARCH_SHIT_MESSAGE:
+        raise exception.SearchResultNotFound()
+
+    topic_list = r.html.find("ul.topic-list", first=True).find("a")
+
+    for topic in topic_list:
+        yield model.SearchResult(
+            topic.text.rsplit(None, 1)[0] if " " in topic.text else "",
+            urlparse(topic.attrs["href"]).path.split("/")[-1],
+            topic.find("small", first=True).text,
+        )

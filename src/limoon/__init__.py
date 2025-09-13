@@ -5,11 +5,12 @@ from .model import *
 
 __all__ = (
     "BASE_URL",
-    "Author",
     "Entry",
-    "Rank",
     "Topic",
+    "Rank",
     "Badge",
+    "Author",
+    "SearchResult",
     "get_topic",
     "get_entry",
     "get_author",
@@ -17,6 +18,6 @@ __all__ = (
     "get_author_rank",
     "get_agenda",
     "get_debe",
-    "search_topic",
+    "get_search_topic",
 )
-__version__ = "0.0.10"
+__version__ = "0.0.11"

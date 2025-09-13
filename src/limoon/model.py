@@ -1,6 +1,6 @@
 import re
 from dataclasses import dataclass, field
-from typing import Callable, Iterator, TypeVar, Union
+from typing import Callable, Iterator, TypeVar, Optional, Union
 
 from . import constant, core
 
@@ -147,3 +147,28 @@ class Author:
             return None
         result = re.match(r"(\D+) \((\d+)\)", stuff.text)
         return Rank(result.group(1), int(result.group(2)))
+
+
+@dataclass
+class SearchResult:
+    """SearchResult data class.
+
+    Arguments:
+    topic_title (str): Topic title.
+    topic_path (str): Unique topic path.
+    topic_entry_count (str|None): Topic total entry count.
+    topic_url (URL): Topic HTTP link.
+    """
+
+    topic_title: str
+    topic_path: str
+    topic_entry_count: Optional[str] = None
+    topic_url: URL = field(init=False)
+
+    def __repr__(self):
+        return f"SearchResult({self.topic_title})"
+
+    def __post_init__(self):
+        self.topic_url = constant.BASE_URL + constant.TOPIC_ROUTE.format(
+            self.topic_path
+        )
