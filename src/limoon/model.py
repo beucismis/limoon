@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 from dataclasses import dataclass, field
 from typing import Callable, Iterator, TypeVar, Optional, Union
 
@@ -18,8 +19,9 @@ class Entry:
     author_nickname (str): Author who created entry.
     content (str): Entry content (with HTML tags).
     favorite_count (int): Entry favorite count.
-    created (str): Datetime of create entry.
-    edited (str|bool): Datetime of edit entry.
+    date (str): Entry sting date.
+    created (datetime): Datetime object of create entry.
+    edited (datetime|bool): Datetime object of edit entry.
     url (str): Entry HTTP link.
     """
 
@@ -27,24 +29,49 @@ class Entry:
     author_nickname: str
     content: str
     favorite_count: int
-    created: str = field(init=True)
-    edited: Union[str, bool] = field(init=False)
+    date: str
+    created: datetime = field(init=False)
+    edited: Union[datetime, bool] = field(init=False)
     url: URL = field(init=False)
 
     def __repr__(self):
         return f"Entry({self.id})"
 
     def __post_init__(self):
-        self.edited = self._is_edited(self.created)
+        self.created, self.edited = self._parse_datetime(self.date)
         self.url = constant.BASE_URL + constant.ENTRY_ROUTE.format(self.id)
 
-    def _is_edited(self, stuff: str) -> Union[str, bool]:
-        try:
-            created, edited = stuff.split("~")
-            self.created = created.strip()
-        except ValueError:
-            return False
-        return edited.strip()
+    def _parse_datetime(self, stuff: str) -> tuple[datetime, Union[datetime, bool]]:
+        def parse_single(value: str) -> datetime:
+            value = value.strip()
+
+            for fmt in ("%d.%m.%Y %H:%M", "%d.%m.%Y"):
+                try:
+                    return datetime.strptime(value, fmt)
+                except ValueError:
+                    continue
+
+            raise ValueError(value)
+
+        if "~" not in stuff:
+            return parse_single(stuff), False
+
+        created_str, edited_str = map(str.strip, stuff.split("~"))
+        created = parse_single(created_str)
+
+        if not edited_str:
+            edited = False
+        elif "." in edited_str:
+            try:
+                edited = datetime.strptime(edited_str, "%d.%m.%Y %H:%M")
+            except ValueError:
+                edited = datetime.strptime(edited_str, "%d.%m.%Y")
+        else:
+            edited = datetime.strptime(
+                f"{created.strftime('%d.%m.%Y')} {edited_str}", "%d.%m.%Y %H:%M"
+            )
+
+        return created, edited
 
 
 @dataclass
@@ -55,7 +82,6 @@ class Topic:
     id (int): Unique topic identity.
     title (str): Topic title.
     path (str): Unique topic path.
-    entrys (class): Entrys written for topic.
     page_count (int|None): Topic total page count.
     url (str): Topic HTTP link.
     """
@@ -63,7 +89,6 @@ class Topic:
     id: int
     title: str
     path: str
-    entrys: Iterator[Entry]
     page_count: Union[int, None]
     url: URL = field(init=False)
 
@@ -147,6 +172,52 @@ class Author:
             return None
         result = re.match(r"(\D+) \((\d+)\)", stuff.text)
         return Rank(result.group(1), int(result.group(2)))
+
+
+@dataclass
+class Agenda:
+    """Agenda page data class.
+
+    Arguments:
+    topic_title (str): Topic title.
+    entry_id (int): Unique topic path.
+    topic_entry_count (str): Topic total entry count.
+    topic_url (URL): Topic HTTP link.
+    """
+
+    topic_title: str
+    topic_path: str
+    topic_entry_count: Optional[str] = None
+    topic_url: URL = field(init=False)
+
+    def __repr__(self):
+        return f"Agenda({self.topic_title})"
+
+    def __post_init__(self):
+        self.topic_url = constant.BASE_URL + constant.TOPIC_ROUTE.format(
+            self.topic_path
+        )
+
+
+@dataclass
+class Debe:
+    """Depe page data class.
+
+    Arguments:
+    topic_title (str): Topic title.
+    entry_id (int): Unique entry id.
+    entry_url (URL): Entry HTTP link.
+    """
+
+    topic_title: str
+    entry_id: int
+    entry_url: URL = field(init=False)
+
+    def __repr__(self):
+        return f"Debe({self.entry_id})"
+
+    def __post_init__(self):
+        self.entry_url = constant.BASE_URL + constant.ENTRY_ROUTE.format(self.entry_id)
 
 
 @dataclass
