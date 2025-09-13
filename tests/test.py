@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 
 from src import limoon
@@ -16,8 +18,6 @@ class TestAPI:
         assert topic.id == 32084
         assert topic.title == "linux"
         assert topic.path == "linux--32084"
-        assert len(list(topic.entrys)) > 1
-        assert type(list(topic.entrys)) is list
         assert topic.page_count > 1
         assert topic.url == "https://eksisozluk.com/linux--32084"
 
@@ -26,7 +26,6 @@ class TestAPI:
         entrys = list(topic.entrys)
 
         assert len(entrys) == 10
-        assert type(entrys) is list
         assert topic.page_count > 1
         assert entrys[3].author_nickname == "hooker with a penis"
         assert "linux çekirdektir." in entrys[3].content
@@ -39,7 +38,7 @@ class TestAPI:
         assert entry.author_nickname == "ssg"
         assert type(entry.content) is str
         assert entry.favorite_count > 1
-        assert entry.created == "15.02.1999"
+        assert entry.created == datetime.strptime("15.02.1999", "%d.%m.%Y")
         assert entry.edited == False
         assert entry.url == "https://eksisozluk.com/entry/1"
 
@@ -83,6 +82,12 @@ class TestAPI:
         assert type(list(author_topic.entrys)) is list
         assert author_topic.page_count > 1
         assert author_topic.url == "https://eksisozluk.com/ssg--31795"
+
+    def test_get_agenda(self):
+        raise NotImplementedError
+
+    def test_get_debe(self):
+        raise NotImplementedError
 
     def test_get_search_topic(self):
         search_result = list(limoon.get_search_topic("linux"))[0]
