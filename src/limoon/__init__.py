@@ -3,7 +3,6 @@ from .model import *
 from .constant import *
 
 
-__version__ = "0.0.14"
 __all__ = (
     "BASE_URL",
     "HEADERS",
