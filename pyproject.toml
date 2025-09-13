@@ -31,7 +31,7 @@ Issues = "https://github.com/beucismis/limoon/issues"
 Documentation = "https://github.com/beucismis/limoon/DOCUMENTATION.md"
 
 [tool.hatch.version]
-path = "src/limoon/__init__.py"
+path = "src/limoon/__about__.py"
 
 [tool.hatch.envs.default]
 dependencies = ["pytest", "pydoc-markdown"]
