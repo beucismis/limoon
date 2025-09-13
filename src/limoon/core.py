@@ -26,12 +26,15 @@ def request(endpoint: str, headers: dict = {}, params: dict = {}) -> requests.Re
     )
 
 
-def get_topic(topic_keywords: TopicKeywords, page: int = 1) -> model.Topic:
+def get_topic(
+    topic_keywords: TopicKeywords, page: int = 1, max_entry: Optional[int] = None
+) -> model.Topic:
     """This function get Ekşi Sözlük topic.
 
     Arguments:
     topic_keywords (str): Keywords (or path) of topic to be get.
     page (int=1): Specific topic page.
+    max_entry (int|None): Max entry per topic.
 
     Returns:
     model.Topic (class): Topic data class.
@@ -53,6 +56,7 @@ def get_topic(topic_keywords: TopicKeywords, page: int = 1) -> model.Topic:
         int(h1.attrs["data-id"]),
         h1.attrs["data-title"],
         path[1:],
+        utils.entry_parser(r.html, max_entry),
         int(page_count.attrs["data-pagecount"]) if page_count else page_count,
     )
 
