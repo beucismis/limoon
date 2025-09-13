@@ -3,7 +3,6 @@ from typing import Callable, Iterator, TypeVar, Optional, Union
 from urllib.parse import urlparse
 
 import requests
-from fake_useragent import UserAgent
 from requests_html import HTMLResponse, HTMLSession
 
 from . import constant, exception, model, utils
@@ -17,27 +16,19 @@ SearchKeywords = TypeVar("SearchKeywords", Callable, str)
 
 # Session
 session = HTMLSession()
-user_agent = UserAgent()
 
 
 def request(endpoint: str, headers: dict = {}, params: dict = {}) -> requests.Response:
-    headers = {
-        "User-Agent": user_agent.random,
-        "Accept-Language": "en-US,en;q=0.5",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    }
-    return session.get(constant.BASE_URL + endpoint, headers=headers, params=params)
+    return session.get(
+        constant.BASE_URL + endpoint, headers=constant.HEADERS, params=params
+    )
 
 
-def get_topic(
-    topic_keywords: TopicKeywords, max_entry: Optional[int] = None, page: int = 1
-) -> model.Topic:
+def get_topic(topic_keywords: TopicKeywords, page: int = 1) -> model.Topic:
     """This function get Ekşi Sözlük topic.
 
     Arguments:
     topic_keywords (str): Keywords (or path) of topic to be get.
-    max_entry (int=None): Maximum number of entrys get from per page.
     page (int=1): Specific topic page.
 
     Returns:
@@ -60,7 +51,6 @@ def get_topic(
         int(h1.attrs["data-id"]),
         h1.attrs["data-title"],
         path[1:],
-        utils.entry_parser(r.html, max_entry),
         int(page_count.attrs["data-pagecount"]) if page_count else page_count,
     )
 
@@ -158,14 +148,11 @@ def get_author_badges(nickname: Nickname) -> Iterator[model.Badge]:
             )
 
 
-def get_author_topic(
-    nickname: Nickname, max_entry: Optional[int] = None
-) -> model.Topic:
+def get_author_topic(nickname: Nickname) -> model.Topic:
     """This function get Ekşi Sözlük author topic.
 
     Arguments:
     nickname (str): Unique author nickname.
-    max_entry (int=None): Maximum number of entrys get from per page.
 
     Returns:
     model.Topic (class): Topic data class.
@@ -173,7 +160,7 @@ def get_author_topic(
 
     r = request(constant.AUTHOR_TOPIC_ROUTE.format(nickname))
 
-    return get_topic(urlparse(r.url).path[1:], max_entry=max_entry)
+    return get_topic(urlparse(r.url).path[1:])
 
 
 def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Iterator[model.Entry]:
@@ -191,17 +178,14 @@ def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Iterator[model.
         yield get_entry(int(topic.find("li#entry-item", first=True).attrs["data-id"]))
 
 
-def get_agenda(
-    max_topic: Optional[int] = None, max_entry: Optional[int] = None
-) -> Iterator[model.Topic]:
+def get_agenda(max_topic: Optional[int] = None) -> Iterator[model.Agenda]:
     """This function get Ekşi Sözlük agenda (gündem) page.
 
     Arguments:
     max_topic (int=None): Maximum number of topics get from agenda.
-    max_entry (int=None): Maximum number of entrys get from topic.
 
     Returns:
-    Iterator[model.Topic]: Topic data classes.
+    Iterator[model.Agenda]: Agenda data classes.
     """
 
     r = request(constant.AGENDA_ROUTE)
@@ -212,20 +196,18 @@ def get_agenda(
     topic_list = r.html.find("ul.topic-list", first=True).find("a")
 
     for topic in topic_list[:max_topic]:
-        yield get_topic(
+        yield model.Agenda(
+            topic.text.rsplit(None, 1)[0] if " " in topic.text else "",
             urlparse(topic.attrs["href"]).path.split("/")[-1],
-            max_entry,
+            topic.find("small", first=True).text,
         )
 
 
-def get_debe(max_entry: Optional[int] = None) -> Iterator[model.Entry]:
+def get_debe() -> Iterator[model.Debe]:
     """This function get Ekşi Sözlük debe page.
 
-    Arguments:
-    max_entry (int=None): Maximum number of entrys get per page.
-
     Returns:
-    Iterator[model.Topic]: Entry data classes.
+    Iterator[model.Debe]: Entry data classes.
     """
 
     r = request(constant.DEBE_ROUTE)
@@ -233,11 +215,12 @@ def get_debe(max_entry: Optional[int] = None) -> Iterator[model.Entry]:
     if r.status_code != HTTPStatus.OK:
         raise exception.EntryNotFound()
 
-    topic_list = r.html.find("ul.topic-list", first=True).find("a")
+    entry_list = r.html.find("ul.topic-list", first=True).find("a")
 
-    for topic in topic_list[:max_entry]:
-        yield get_entry(
-            urlparse(topic.attrs["href"]).path.split("/")[-1],
+    for entry in entry_list:
+        yield model.Debe(
+            entry.find("span.caption", first=True).text,
+            urlparse(entry.attrs["href"]).path.split("/")[-1],
         )
 
 
