@@ -7,12 +7,14 @@
   * [EntryNotFound](#limoon.exception.EntryNotFound)
   * [AuthorNotFound](#limoon.exception.AuthorNotFound)
   * [PageNotFound](#limoon.exception.PageNotFound)
+  * [SearchResultNotFound](#limoon.exception.SearchResultNotFound)
 * [limoon.model](#limoon.model)
   * [Entry](#limoon.model.Entry)
   * [Topic](#limoon.model.Topic)
   * [Rank](#limoon.model.Rank)
   * [Badge](#limoon.model.Badge)
   * [Author](#limoon.model.Author)
+  * [SearchResult](#limoon.model.SearchResult)
 * [limoon.core](#limoon.core)
   * [get\_topic](#limoon.core.get_topic)
   * [get\_entry](#limoon.core.get_entry)
@@ -23,6 +25,7 @@
   * [get\_author\_last\_entrys](#limoon.core.get_author_last_entrys)
   * [get\_agenda](#limoon.core.get_agenda)
   * [get\_debe](#limoon.core.get_debe)
+  * [get\_search\_topic](#limoon.core.get_search_topic)
 * [limoon.constant](#limoon.constant)
 
 <a id="limoon"></a>
@@ -76,6 +79,16 @@ class PageNotFound(Exception)
 ```
 
 The page record is not available.
+
+<a id="limoon.exception.SearchResultNotFound"></a>
+
+## SearchResultNotFound Objects
+
+```python
+class SearchResultNotFound(Exception)
+```
+
+Raised when no search results are found.
 
 <a id="limoon.model"></a>
 
@@ -177,6 +190,24 @@ Author data class.
 - `rank` _class_ - Author rank.
 - `badges` _class_ - Author badges.
 - `url` _str_ - Author HTTP link.
+
+<a id="limoon.model.SearchResult"></a>
+
+## SearchResult Objects
+
+```python
+@dataclass
+class SearchResult()
+```
+
+SearchResult data class.
+
+**Arguments**:
+
+- `topic_title` _str_ - Topic title.
+- `topic_path` _str_ - Unique topic path.
+- `topic_entry_count` _str|None_ - Topic total entry count.
+- `topic_url` _URL_ - Topic HTTP link.
 
 <a id="limoon.core"></a>
 
@@ -352,6 +383,25 @@ This function get Ekşi Sözlük debe page.
 **Returns**:
 
 - `Iterator[model.Topic]` - Entry data classes.
+
+<a id="limoon.core.get_search_topic"></a>
+
+#### get\_search\_topic
+
+```python
+def get_search_topic(keywords: SearchKeywords) -> Iterator[model.SearchResult]
+```
+
+This function get Ekşi Sözlük search topic page.
+
+**Arguments**:
+
+- `keywords` _SearchKeywords_ - Search keywords.
+  
+
+**Returns**:
+
+- `Iterator[model.SearchResult]` - SearchResult data classes.
 
 <a id="limoon.constant"></a>
 
