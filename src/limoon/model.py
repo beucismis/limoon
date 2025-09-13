@@ -82,6 +82,7 @@ class Topic:
     id (int): Unique topic identity.
     title (str): Topic title.
     path (str): Unique topic path.
+    entrys (Iterator[Entry]): Topic total entrys per page.
     page_count (int|None): Topic total page count.
     url (str): Topic HTTP link.
     """
@@ -89,6 +90,7 @@ class Topic:
     id: int
     title: str
     path: str
+    entrys: Iterator[Entry]
     page_count: Union[int, None]
     url: URL = field(init=False)
 
@@ -179,24 +181,22 @@ class Agenda:
     """Agenda page data class.
 
     Arguments:
-    topic_title (str): Topic title.
-    entry_id (int): Unique topic path.
-    topic_entry_count (str): Topic total entry count.
-    topic_url (URL): Topic HTTP link.
+    title (str): Topic title.
+    path (int): Unique topic path.
+    entry_count (str): Topic total entry count.
+    url (URL): Topic HTTP link.
     """
 
-    topic_title: str
-    topic_path: str
-    topic_entry_count: Optional[str] = None
-    topic_url: URL = field(init=False)
+    title: str
+    path: str
+    entry_count: Optional[str] = None
+    url: URL = field(init=False)
 
     def __repr__(self):
-        return f"Agenda({self.topic_title})"
+        return f"Agenda({self.title})"
 
     def __post_init__(self):
-        self.topic_url = constant.BASE_URL + constant.TOPIC_ROUTE.format(
-            self.topic_path
-        )
+        self.url = constant.BASE_URL + constant.TOPIC_ROUTE.format(self.path)
 
 
 @dataclass
@@ -205,19 +205,19 @@ class Debe:
 
     Arguments:
     topic_title (str): Topic title.
-    entry_id (int): Unique entry id.
-    entry_url (URL): Entry HTTP link.
+    id (int): Unique entry id.
+    url (URL): Entry HTTP link.
     """
 
     topic_title: str
-    entry_id: int
-    entry_url: URL = field(init=False)
+    id: int
+    url: URL = field(init=False)
 
     def __repr__(self):
-        return f"Debe({self.entry_id})"
+        return f"Debe({self.id})"
 
     def __post_init__(self):
-        self.entry_url = constant.BASE_URL + constant.ENTRY_ROUTE.format(self.entry_id)
+        self.url = constant.BASE_URL + constant.ENTRY_ROUTE.format(self.id)
 
 
 @dataclass
@@ -225,21 +225,19 @@ class SearchResult:
     """SearchResult data class.
 
     Arguments:
-    topic_title (str): Topic title.
-    topic_path (str): Unique topic path.
-    topic_entry_count (str|None): Topic total entry count.
-    topic_url (URL): Topic HTTP link.
+    title (str): Topic title.
+    path (str): Unique topic path.
+    entry_count (str|None): Topic total entry count.
+    url (URL): Topic HTTP link.
     """
 
-    topic_title: str
-    topic_path: str
-    topic_entry_count: Optional[str] = None
-    topic_url: URL = field(init=False)
+    title: str
+    path: str
+    entry_count: Optional[str] = None
+    url: URL = field(init=False)
 
     def __repr__(self):
-        return f"SearchResult({self.topic_title})"
+        return f"SearchResult({self.title})"
 
     def __post_init__(self):
-        self.topic_url = constant.BASE_URL + constant.TOPIC_ROUTE.format(
-            self.topic_path
-        )
+        self.url = constant.BASE_URL + constant.TOPIC_ROUTE.format(self.path)
