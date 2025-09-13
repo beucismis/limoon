@@ -29,17 +29,15 @@ print(limoon.BASE_URL)
 
 topic = limoon.get_topic("richard stallman")
 # Topic(43270)
-list(topic.entrys)
-# [Entry(1091215), Entry(1091227), Entry(2137487), ...]
 dir(topic)
-# [..., 'entrys', 'id', 'page_count', 'path', 'title', 'url']
+# [..., 'id', 'page_count', 'path', 'title', 'url']
 
 entry = limoon.get_entry(2878417)
 # Entry(2878417)
 entry.content
 # 'programcılıgın 8. harikası'
 dir(entry)
-# [..., 'author_nickname', 'content', 'created', 'edited', 'favorite_count', 'id', 'url']
+# [..., 'author_nickname', 'content', 'created', 'date', 'edited', 'favorite_count', 'id', 'url']
 
 author = limoon.get_author("ssg")
 # Author(ssg)
