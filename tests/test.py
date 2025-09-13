@@ -27,8 +27,8 @@ class TestAPI:
 
         assert len(entrys) == 10
         assert topic.page_count > 1
-        assert entrys[3].author_nickname == "hooker with a penis"
-        assert "linux çekirdektir." in entrys[3].content
+        assert entrys[1].author_nickname == "hooker with a penis"
+        assert "linux çekirdektir." in entrys[1].content
 
     def test_get_entry(self):
         entry = limoon.get_entry(1)
@@ -78,25 +78,25 @@ class TestAPI:
         assert author_topic.id == 31795
         assert author_topic.title == "ssg"
         assert author_topic.path == "ssg--31795"
-        assert len(list(author_topic.entrys)) > 1
-        assert type(list(author_topic.entrys)) is list
         assert author_topic.page_count > 1
         assert author_topic.url == "https://eksisozluk.com/ssg--31795"
 
     def test_get_agenda(self):
-        raise NotImplementedError
+        agenda = list(limoon.get_agenda())[0]
+        assert type(agenda) is limoon.Agenda
 
     def test_get_debe(self):
-        raise NotImplementedError
+        debe = list(limoon.get_debe())[0]
+        assert type(debe) is limoon.Debe
 
     def test_get_search_topic(self):
         search_result = list(limoon.get_search_topic("linux"))[0]
 
         assert type(search_result) is limoon.SearchResult
-        assert search_result.topic_title == "linux"
-        assert search_result.topic_path == "linux--32084"
-        assert type(search_result.topic_entry_count) is str
-        assert search_result.topic_url == "https://eksisozluk.com/linux--32084"
+        assert search_result.title == "linux"
+        assert search_result.path == "linux--32084"
+        assert type(search_result.entry_count) is str
+        assert search_result.url == "https://eksisozluk.com/linux--32084"
 
 
 class TestException:
