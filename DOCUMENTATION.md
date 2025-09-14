@@ -119,6 +119,8 @@ Entry data class.
 - `content` _str_ - Entry content (with HTML tags).
 - `favorite_count` _int_ - Entry favorite count.
 - `date` _str_ - Entry sting date.
+- `topic_title` _str_ - Entry topic title.
+- `topic_path` _str_ - Unique entry topic path.
 - `created` _datetime_ - Datetime object of create entry.
 - `edited` _datetime|bool_ - Datetime object of edit entry.
 - `url` _str_ - Entry HTTP link.
@@ -194,6 +196,7 @@ Author data class.
 - `total_entry` _int_ - Author total entry count.
 - `follower_count` _int_ - Author total follower count.
 - `following_count` _int_ - Author total following count.
+- `record_date` _str_ - Author record date.
 - `avatar_url` _str_ - Author avatar HTTP link.
 - `rank` _class_ - Author rank.
 - `badges` _class_ - Author badges.
