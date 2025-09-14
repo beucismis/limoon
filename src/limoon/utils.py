@@ -1,12 +1,12 @@
+from typing import Iterator, Optional
 from urllib.parse import urlparse
-from typing import Optional, Iterator
 
 from requests_html import HTML
 
-from . import model
+from . import models
 
 
-def entry_parser(html: HTML, max_entry: Optional[int] = None) -> Iterator[model.Entry]:
+def entry_parser(html: HTML, max_entry: Optional[int] = None) -> Iterator[models.Entry]:
     entry_items = html.find("ul#entry-item-list", first=True).find("li#entry-item")
 
     for item in entry_items[:max_entry]:
@@ -15,13 +15,14 @@ def entry_parser(html: HTML, max_entry: Optional[int] = None) -> Iterator[model.
         favorite_count = item.attrs["data-favorite-count"]
         created = item.find("a.entry-date", first=True)
         topic_title = html.find("h1#title", first=True)
+        topic_path = topic_title.find("a", first=True).attrs["href"]
 
-        yield model.Entry(
+        yield models.Entry(
             int(item.attrs["data-id"]),
             author.text,
             content.text,
             int(favorite_count),
             created.text,
             topic_title.attrs["data-title"],
-            urlparse(topic_title.find("a", first=True).attrs["href"]).path.split("/")[-1]
+            urlparse(topic_path).path.split("/")[-1],
         )
