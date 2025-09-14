@@ -1,5 +1,4 @@
 from http import HTTPStatus
-from types import NoneType
 from typing import Callable, Iterator, TypeVar, Optional, Union
 from urllib.parse import urlparse
 
