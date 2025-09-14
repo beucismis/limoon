@@ -1,6 +1,7 @@
+from .constants import *
 from .core import *
-from .model import *
-from .constant import *
+from .exceptions import *
+from .models import *
 
 
 __all__ = (
@@ -12,6 +13,11 @@ __all__ = (
     "Badge",
     "Author",
     "SearchResult",
+    "TopicNotFound",
+    "EntryNotFound",
+    "AuthorNotFound",
+    "PageNotFound",
+    "SearchResultNotFound",
     "get_topic",
     "get_entry",
     "get_author",
