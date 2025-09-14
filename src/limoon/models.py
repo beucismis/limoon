@@ -1,13 +1,13 @@
 import re
-from datetime import datetime
 from dataclasses import dataclass, field
-from typing import Callable, Iterator, TypeVar, Optional, Union
+from datetime import datetime
+from typing import Callable, Iterator, Optional, TypeVar, Union
 
-from . import constant, core
+from . import constants, core
 
 
 # Typings
-URL = TypeError("URL", Callable, str)
+URL = TypeVar("URL", Callable, str)
 
 
 @dataclass
@@ -43,7 +43,7 @@ class Entry:
 
     def __post_init__(self):
         self.created, self.edited = self._parse_datetime(self.date)
-        self.url = constant.BASE_URL + constant.ENTRY_ROUTE.format(self.id)
+        self.url = constants.BASE_URL + constants.ENTRY_ROUTE.format(self.id)
 
     def _parse_datetime(self, stuff: str) -> tuple[datetime, Union[datetime, bool]]:
         def parse_single(value: str) -> datetime:
@@ -102,7 +102,7 @@ class Topic:
         return f"Topic({self.id})"
 
     def __post_init__(self):
-        self.url = constant.BASE_URL + constant.TOPIC_ROUTE.format(self.path)
+        self.url = constants.BASE_URL + constants.TOPIC_ROUTE.format(self.path)
 
 
 @dataclass
@@ -173,9 +173,9 @@ class Author:
     def __post_init__(self):
         self.rank = self._parse_rank(self.rank)
         self.badges = core.get_author_badges(self.nickname)
-        self.url = constant.BASE_URL + constant.AUTHOR_ROUTE.format(self.nickname)
+        self.url = constants.BASE_URL + constants.AUTHOR_ROUTE.format(self.nickname)
 
-    def _parse_rank(self, stuff: Union[str, None]) -> Union[Rank, None]:
+    def _parse_rank(self, stuff: Union[Rank, None]) -> Union[Rank, None]:
         if isinstance(stuff, type(None)):
             return None
         result = re.match(r"(\D+) \((\d+)\)", stuff.text)
@@ -202,7 +202,7 @@ class Agenda:
         return f"Agenda({self.title})"
 
     def __post_init__(self):
-        self.url = constant.BASE_URL + constant.TOPIC_ROUTE.format(self.path)
+        self.url = constants.BASE_URL + constants.TOPIC_ROUTE.format(self.path)
 
 
 @dataclass
@@ -223,7 +223,7 @@ class Debe:
         return f"Debe({self.id})"
 
     def __post_init__(self):
-        self.url = constant.BASE_URL + constant.ENTRY_ROUTE.format(self.id)
+        self.url = constants.BASE_URL + constants.ENTRY_ROUTE.format(self.id)
 
 
 @dataclass
@@ -246,4 +246,4 @@ class SearchResult:
         return f"SearchResult({self.title})"
 
     def __post_init__(self):
-        self.url = constant.BASE_URL + constant.TOPIC_ROUTE.format(self.path)
+        self.url = constants.BASE_URL + constants.TOPIC_ROUTE.format(self.path)
