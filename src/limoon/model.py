@@ -20,6 +20,8 @@ class Entry:
     content (str): Entry content (with HTML tags).
     favorite_count (int): Entry favorite count.
     date (str): Entry sting date.
+    topic_title (str): Entry topic title.
+    topic_path (str): Unique entry topic path.
     created (datetime): Datetime object of create entry.
     edited (datetime|bool): Datetime object of edit entry.
     url (str): Entry HTTP link.
@@ -30,6 +32,8 @@ class Entry:
     content: str
     favorite_count: int
     date: str
+    topic_title: str
+    topic_path: str
     created: datetime = field(init=False)
     edited: Union[datetime, bool] = field(init=False)
     url: URL = field(init=False)
@@ -145,6 +149,7 @@ class Author:
     total_entry (int): Author total entry count.
     follower_count (int): Author total follower count.
     following_count (int): Author total following count.
+    record_date (str): Author record date.
     avatar_url (str): Author avatar HTTP link.
     rank (class): Author rank.
     badges (class): Author badges.
@@ -156,6 +161,7 @@ class Author:
     total_entry: int
     follower_count: int
     following_count: int
+    record_date: str
     avatar_url: URL
     rank: Union[Rank, None] = field(init=True)
     badges: Iterator[Badge] = field(init=False)
