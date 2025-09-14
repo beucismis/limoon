@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from types import NoneType
 from typing import Callable, Iterator, TypeVar, Optional, Union
 from urllib.parse import urlparse
 
@@ -104,6 +105,7 @@ def get_author(nickname: Nickname) -> model.Author:
     total_entry = r.html.find("span#entry-count-total", first=True)
     follower_count = r.html.find("span#user-follower-count", first=True)
     following_count = r.html.find("span#user-following-count", first=True)
+    record_date = r.html.find("div.recorddate", first=True)
     avatar_url = r.html.find("img.avatar", first=True)
     rank = r.html.find("p.muted", first=True)
 
@@ -113,6 +115,7 @@ def get_author(nickname: Nickname) -> model.Author:
         int(total_entry.text),
         int(follower_count.text),
         int(following_count.text),
+        record_date.text.title(),
         avatar_url.attrs["src"],
         rank,
     )
@@ -243,14 +246,10 @@ def get_search_topic(keywords: SearchKeywords) -> Iterator[model.SearchResult]:
         constant.SEARCH_ROUTE,
         params={
             "SearchForm.Keywords": keywords,
-            "SearchForm.NiceOnly": False,
+            "SearchForm.NiceOnly": "false",
             "SearchForm.SortOrder": "Count",
         },
     )
-    total_topic = r.html.find("section#content-body", first=True)
-
-    if total_topic.find("p")[-1].text == exception.SEARCH_SHIT_MESSAGE:
-        raise exception.SearchResultNotFound()
 
     topic_list = r.html.find("ul.topic-list", first=True).find("a")
 
