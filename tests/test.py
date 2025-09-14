@@ -3,7 +3,6 @@ from datetime import datetime
 import pytest
 
 from src import limoon
-from src.limoon import exception
 
 
 class TestAPI:
@@ -104,17 +103,17 @@ class TestAPI:
 
 class TestException:
     def test_topic_not_found(self):
-        with pytest.raises(exception.TopicNotFound):
+        with pytest.raises(limoon.TopicNotFound):
             limoon.get_topic("böylebirbaslikyok")
 
     def test_topic_page_not_found(self):
-        with pytest.raises(exception.TopicNotFound):
+        with pytest.raises(limoon.TopicNotFound):
             limoon.get_topic("linux--32084", page=123456789)
 
     def test_entry_not_found(self):
-        with pytest.raises(exception.EntryNotFound):
+        with pytest.raises(limoon.EntryNotFound):
             limoon.get_entry(123456789)
 
     def test_author_not_found(self):
-        with pytest.raises(exception.AuthorNotFound):
+        with pytest.raises(limoon.AuthorNotFound):
             limoon.get_author("böylebirkullanıcıyok")
