@@ -38,6 +38,8 @@ class TestAPI:
         assert entry.author_nickname == "ssg"
         assert type(entry.content) is str
         assert entry.favorite_count > 1
+        assert entry.topic_title == "pena"
+        assert entry.topic_path == "pena--31782"
         assert entry.created == datetime.strptime("15.02.1999", "%d.%m.%Y")
         assert entry.edited == False
         assert entry.url == "https://eksisozluk.com/entry/1"
@@ -51,6 +53,7 @@ class TestAPI:
         assert author.total_entry > 1
         assert author.follower_count > 1
         assert author.following_count > 1
+        assert author.record_date == "Şubat 1999"
         assert "https://img.ekstat.com" in author.avatar_url
         assert author.url == "https://eksisozluk.com/biri/ssg"
 
