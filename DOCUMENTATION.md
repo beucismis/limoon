@@ -1,23 +1,23 @@
 # Table of Contents
 
 * [limoon](#limoon)
+* [limoon.models](#limoon.models)
+  * [Entry](#limoon.models.Entry)
+  * [Topic](#limoon.models.Topic)
+  * [Rank](#limoon.models.Rank)
+  * [Badge](#limoon.models.Badge)
+  * [Author](#limoon.models.Author)
+  * [Agenda](#limoon.models.Agenda)
+  * [Debe](#limoon.models.Debe)
+  * [SearchResult](#limoon.models.SearchResult)
 * [limoon.utils](#limoon.utils)
-* [limoon.exception](#limoon.exception)
-  * [TopicNotFound](#limoon.exception.TopicNotFound)
-  * [EntryNotFound](#limoon.exception.EntryNotFound)
-  * [AuthorNotFound](#limoon.exception.AuthorNotFound)
-  * [PageNotFound](#limoon.exception.PageNotFound)
-  * [SearchResultNotFound](#limoon.exception.SearchResultNotFound)
 * [limoon.\_\_about\_\_](#limoon.__about__)
-* [limoon.model](#limoon.model)
-  * [Entry](#limoon.model.Entry)
-  * [Topic](#limoon.model.Topic)
-  * [Rank](#limoon.model.Rank)
-  * [Badge](#limoon.model.Badge)
-  * [Author](#limoon.model.Author)
-  * [Agenda](#limoon.model.Agenda)
-  * [Debe](#limoon.model.Debe)
-  * [SearchResult](#limoon.model.SearchResult)
+* [limoon.exceptions](#limoon.exceptions)
+  * [TopicNotFound](#limoon.exceptions.TopicNotFound)
+  * [EntryNotFound](#limoon.exceptions.EntryNotFound)
+  * [AuthorNotFound](#limoon.exceptions.AuthorNotFound)
+  * [PageNotFound](#limoon.exceptions.PageNotFound)
+  * [SearchResultNotFound](#limoon.exceptions.SearchResultNotFound)
 * [limoon.core](#limoon.core)
   * [get\_topic](#limoon.core.get_topic)
   * [get\_entry](#limoon.core.get_entry)
@@ -29,79 +29,17 @@
   * [get\_agenda](#limoon.core.get_agenda)
   * [get\_debe](#limoon.core.get_debe)
   * [get\_search\_topic](#limoon.core.get_search_topic)
-* [limoon.constant](#limoon.constant)
+* [limoon.constants](#limoon.constants)
 
 <a id="limoon"></a>
 
 # limoon
 
-<a id="limoon.utils"></a>
+<a id="limoon.models"></a>
 
-# limoon.utils
+# limoon.models
 
-<a id="limoon.exception"></a>
-
-# limoon.exception
-
-<a id="limoon.exception.TopicNotFound"></a>
-
-## TopicNotFound Objects
-
-```python
-class TopicNotFound(Exception)
-```
-
-The topic record is not available.
-
-<a id="limoon.exception.EntryNotFound"></a>
-
-## EntryNotFound Objects
-
-```python
-class EntryNotFound(Exception)
-```
-
-The entry record is not available.
-
-<a id="limoon.exception.AuthorNotFound"></a>
-
-## AuthorNotFound Objects
-
-```python
-class AuthorNotFound(Exception)
-```
-
-The author record is not available.
-
-<a id="limoon.exception.PageNotFound"></a>
-
-## PageNotFound Objects
-
-```python
-class PageNotFound(Exception)
-```
-
-The page record is not available.
-
-<a id="limoon.exception.SearchResultNotFound"></a>
-
-## SearchResultNotFound Objects
-
-```python
-class SearchResultNotFound(Exception)
-```
-
-Raised when no search results are found.
-
-<a id="limoon.__about__"></a>
-
-# limoon.\_\_about\_\_
-
-<a id="limoon.model"></a>
-
-# limoon.model
-
-<a id="limoon.model.Entry"></a>
+<a id="limoon.models.Entry"></a>
 
 ## Entry Objects
 
@@ -125,7 +63,7 @@ Entry data class.
 - `edited` _datetime|bool_ - Datetime object of edit entry.
 - `url` _str_ - Entry HTTP link.
 
-<a id="limoon.model.Topic"></a>
+<a id="limoon.models.Topic"></a>
 
 ## Topic Objects
 
@@ -145,7 +83,7 @@ Topic data class.
 - `page_count` _int|None_ - Topic total page count.
 - `url` _str_ - Topic HTTP link.
 
-<a id="limoon.model.Rank"></a>
+<a id="limoon.models.Rank"></a>
 
 ## Rank Objects
 
@@ -161,7 +99,7 @@ Rank data class.
 - `name` _str_ - Custom rank name.
 - `karma` _int_ - Rank karma number.
 
-<a id="limoon.model.Badge"></a>
+<a id="limoon.models.Badge"></a>
 
 ## Badge Objects
 
@@ -178,7 +116,7 @@ Badge data class.
   description (str):
   icon_url (str):
 
-<a id="limoon.model.Author"></a>
+<a id="limoon.models.Author"></a>
 
 ## Author Objects
 
@@ -202,7 +140,7 @@ Author data class.
 - `badges` _class_ - Author badges.
 - `url` _str_ - Author HTTP link.
 
-<a id="limoon.model.Agenda"></a>
+<a id="limoon.models.Agenda"></a>
 
 ## Agenda Objects
 
@@ -220,7 +158,7 @@ Agenda page data class.
 - `entry_count` _str_ - Topic total entry count.
 - `url` _URL_ - Topic HTTP link.
 
-<a id="limoon.model.Debe"></a>
+<a id="limoon.models.Debe"></a>
 
 ## Debe Objects
 
@@ -237,7 +175,7 @@ Depe page data class.
 - `id` _int_ - Unique entry id.
 - `url` _URL_ - Entry HTTP link.
 
-<a id="limoon.model.SearchResult"></a>
+<a id="limoon.models.SearchResult"></a>
 
 ## SearchResult Objects
 
@@ -255,6 +193,68 @@ SearchResult data class.
 - `entry_count` _str|None_ - Topic total entry count.
 - `url` _URL_ - Topic HTTP link.
 
+<a id="limoon.utils"></a>
+
+# limoon.utils
+
+<a id="limoon.__about__"></a>
+
+# limoon.\_\_about\_\_
+
+<a id="limoon.exceptions"></a>
+
+# limoon.exceptions
+
+<a id="limoon.exceptions.TopicNotFound"></a>
+
+## TopicNotFound Objects
+
+```python
+class TopicNotFound(Exception)
+```
+
+The topic record is not available.
+
+<a id="limoon.exceptions.EntryNotFound"></a>
+
+## EntryNotFound Objects
+
+```python
+class EntryNotFound(Exception)
+```
+
+The entry record is not available.
+
+<a id="limoon.exceptions.AuthorNotFound"></a>
+
+## AuthorNotFound Objects
+
+```python
+class AuthorNotFound(Exception)
+```
+
+The author record is not available.
+
+<a id="limoon.exceptions.PageNotFound"></a>
+
+## PageNotFound Objects
+
+```python
+class PageNotFound(Exception)
+```
+
+The page record is not available.
+
+<a id="limoon.exceptions.SearchResultNotFound"></a>
+
+## SearchResultNotFound Objects
+
+```python
+class SearchResultNotFound(Exception)
+```
+
+Raised when no search results are found.
+
 <a id="limoon.core"></a>
 
 # limoon.core
@@ -266,7 +266,7 @@ SearchResult data class.
 ```python
 def get_topic(topic_keywords: TopicKeywords,
               page: int = 1,
-              max_entry: Optional[int] = None) -> model.Topic
+              max_entry: Optional[int] = None) -> models.Topic
 ```
 
 This function get Ekşi Sözlük topic.
@@ -280,14 +280,14 @@ This function get Ekşi Sözlük topic.
 
 **Returns**:
 
-- `model.Topic` _class_ - Topic data class.
+- `models.Topic` _class_ - Topic data class.
 
 <a id="limoon.core.get_entry"></a>
 
 #### get\_entry
 
 ```python
-def get_entry(entry_id: EntryID) -> model.Entry
+def get_entry(entry_id: EntryID) -> models.Entry
 ```
 
 This function get Ekşi Sözlük entry.
@@ -299,14 +299,14 @@ This function get Ekşi Sözlük entry.
 
 **Returns**:
 
-- `model.Entry` _class_ - Entry data class.
+- `models.Entry` _class_ - Entry data class.
 
 <a id="limoon.core.get_author"></a>
 
 #### get\_author
 
 ```python
-def get_author(nickname: Nickname) -> model.Author
+def get_author(nickname: Nickname) -> models.Author
 ```
 
 This function get Ekşi Sözlük author.
@@ -318,14 +318,14 @@ This function get Ekşi Sözlük author.
 
 **Returns**:
 
-- `model.Author` _class_ - Author data class.
+- `models.Author` _class_ - Author data class.
 
 <a id="limoon.core.get_author_rank"></a>
 
 #### get\_author\_rank
 
 ```python
-def get_author_rank(nickname: Nickname) -> model.Rank
+def get_author_rank(nickname: Nickname) -> models.Rank
 ```
 
 This function get Ekşi Sözlük author rank.
@@ -337,14 +337,14 @@ This function get Ekşi Sözlük author rank.
 
 **Returns**:
 
-- `model.Rank` _class_ - Rank data class.
+- `models.Rank` _class_ - Rank data class.
 
 <a id="limoon.core.get_author_badges"></a>
 
 #### get\_author\_badges
 
 ```python
-def get_author_badges(nickname: Nickname) -> Iterator[model.Badge]
+def get_author_badges(nickname: Nickname) -> Iterator[models.Badge]
 ```
 
 This function get Ekşi Sözlük author badges.
@@ -356,14 +356,14 @@ This function get Ekşi Sözlük author badges.
 
 **Returns**:
 
-- `Iterator[model.Badge]` - Badge data classes.
+- `Iterator[models.Badge]` - Badge data classes.
 
 <a id="limoon.core.get_author_topic"></a>
 
 #### get\_author\_topic
 
 ```python
-def get_author_topic(nickname: Nickname) -> model.Topic
+def get_author_topic(nickname: Nickname) -> models.Topic
 ```
 
 This function get Ekşi Sözlük author topic.
@@ -375,7 +375,7 @@ This function get Ekşi Sözlük author topic.
 
 **Returns**:
 
-- `model.Topic` _class_ - Topic data class.
+- `models.Topic` _class_ - Topic data class.
 
 <a id="limoon.core.get_author_last_entrys"></a>
 
@@ -383,7 +383,7 @@ This function get Ekşi Sözlük author topic.
 
 ```python
 def get_author_last_entrys(nickname: Nickname,
-                           page: int = 1) -> Iterator[model.Entry]
+                           page: int = 1) -> Iterator[models.Entry]
 ```
 
 
@@ -393,7 +393,7 @@ def get_author_last_entrys(nickname: Nickname,
 #### get\_agenda
 
 ```python
-def get_agenda(max_topic: Optional[int] = None) -> Iterator[model.Agenda]
+def get_agenda(max_topic: Optional[int] = None) -> Iterator[models.Agenda]
 ```
 
 This function get Ekşi Sözlük agenda (gündem) page.
@@ -405,28 +405,29 @@ This function get Ekşi Sözlük agenda (gündem) page.
 
 **Returns**:
 
-- `Iterator[model.Agenda]` - Agenda data classes.
+- `Iterator[models.Agenda]` - Agenda data classes.
 
 <a id="limoon.core.get_debe"></a>
 
 #### get\_debe
 
 ```python
-def get_debe() -> Iterator[model.Debe]
+def get_debe() -> Iterator[models.Debe]
 ```
 
 This function get Ekşi Sözlük debe page.
 
 **Returns**:
 
-- `Iterator[model.Debe]` - Entry data classes.
+- `Iterator[models.Debe]` - Entry data classes.
 
 <a id="limoon.core.get_search_topic"></a>
 
 #### get\_search\_topic
 
 ```python
-def get_search_topic(keywords: SearchKeywords) -> Iterator[model.SearchResult]
+def get_search_topic(
+        keywords: SearchKeywords) -> Iterator[models.SearchResult]
 ```
 
 This function get Ekşi Sözlük search topic page.
@@ -438,9 +439,9 @@ This function get Ekşi Sözlük search topic page.
 
 **Returns**:
 
-- `Iterator[model.SearchResult]` - SearchResult data classes.
+- `Iterator[models.SearchResult]` - SearchResult data classes.
 
-<a id="limoon.constant"></a>
+<a id="limoon.constants"></a>
 
-# limoon.constant
+# limoon.constants
 
