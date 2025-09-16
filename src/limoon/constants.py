@@ -18,8 +18,6 @@ DEBE_ROUTE: Final = "/debe"
 SEARCH_ROUTE: Final = "/basliklar/ara"
 
 HEADERS = {
-    "Connection": "keep-alive",
-    "Alt-Used": "eksisozluk.com",
     "User-Agent": UserAgent().random,
     "X-Requested-With": "XMLHttpRequest",
     "Accept-Encoding": "gzip, deflate, br, zstd",
