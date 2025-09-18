@@ -17,7 +17,8 @@ class Entry:
     Arguments:
     id (int): Unique entry identity.
     author_nickname (str): Author who created entry.
-    content (str): Entry content (with HTML tags).
+    text (str): Entry text.
+    html (str): Entry text (with HTML tags).
     favorite_count (int): Entry favorite count.
     date (str): Entry sting date.
     topic_title (str): Entry topic title.
@@ -29,7 +30,8 @@ class Entry:
 
     id: int
     author_nickname: str
-    content: str
+    text: str
+    html: str
     favorite_count: int
     date: str
     topic_title: str
@@ -87,7 +89,7 @@ class Topic:
     title (str): Topic title.
     path (str): Unique topic path.
     entrys (Iterator[Entry]): Topic total entrys per page.
-    page_count (int|None): Topic total page count.
+    page_count (int): Topic total page count.
     url (str): Topic HTTP link.
     """
 
@@ -95,7 +97,7 @@ class Topic:
     title: str
     path: str
     entrys: Iterator[Entry]
-    page_count: Union[int, None]
+    page_count: int
     url: URL = field(init=False)
 
     def __repr__(self):
@@ -145,7 +147,8 @@ class Author:
 
     Arguments:
     nickname (str): Unique author nickname.
-    biography (str|None): Author biography (with HTML tags).
+    biography_text (str|None): Author biography.
+    biography_html (str|None): Author biography (with HTML tags).
     total_entry (int): Author total entry count.
     follower_count (int): Author total follower count.
     following_count (int): Author total following count.
@@ -157,7 +160,8 @@ class Author:
     """
 
     nickname: str
-    biography: Union[str, None]
+    biography_text: Union[str, None]
+    biography_html: Union[str, None]
     total_entry: int
     follower_count: int
     following_count: int
