@@ -23,3 +23,16 @@ class PageNotFound(Exception):
 
 class SearchResultNotFound(Exception):
     """Raised when no search results are found."""
+
+
+class HTMLParsingError(Exception):
+    """Raised when an error occurs while parsing HTML."""
+
+
+class ElementNotFound(HTMLParsingError):
+    """Raised when a required HTML element is not found."""
+
+    def __init__(self, message: str, html: str):
+        self.message = message
+        self.html = html
+        super().__init__(self.message)
