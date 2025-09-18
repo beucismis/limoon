@@ -4,6 +4,7 @@ from typing import Callable, Iterator, Optional, TypeVar, Union
 from urllib.parse import urlparse
 
 import requests
+from curl_adapter import CurlCffiAdapter
 from requests_html import HTMLResponse, HTMLSession
 
 from . import constants, exceptions, models, utils
@@ -17,6 +18,8 @@ SearchKeywords = TypeVar("SearchKeywords", Callable, str)
 
 # Session
 session = HTMLSession()
+session.mount("http://", CurlCffiAdapter())
+session.mount("https://", CurlCffiAdapter())
 
 
 def request(endpoint: str, headers: dict = {}, params: dict = {}) -> requests.Response:
