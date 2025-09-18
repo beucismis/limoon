@@ -18,6 +18,7 @@ __all__ = (
     "AuthorNotFound",
     "PageNotFound",
     "SearchResultNotFound",
+    "ElementNotFound",
     "get_topic",
     "get_entry",
     "get_author",
