@@ -31,6 +31,7 @@
   * [get\_agenda](#limoon.core.get_agenda)
   * [get\_debe](#limoon.core.get_debe)
   * [get\_search\_topic](#limoon.core.get_search_topic)
+  * [get\_random\_entry](#limoon.core.get_random_entry)
 * [limoon.constants](#limoon.constants)
 
 <a id="limoon"></a>
@@ -378,7 +379,7 @@ This function get Ekşi Sözlük author badges.
 
 **Returns**:
 
-- `Iterator[models.Badge]` - Badge data classes.
+- `Iterator[models.Badge]` _class_ - Badge data classes.
 
 <a id="limoon.core.get_author_topic"></a>
 
@@ -437,7 +438,7 @@ This function get Ekşi Sözlük agenda (gündem) page.
 
 **Returns**:
 
-- `Iterator[models.Agenda]` - Agenda data classes.
+- `Iterator[models.Agenda]` _class_ - Agenda data classes.
 
 <a id="limoon.core.get_debe"></a>
 
@@ -451,7 +452,7 @@ This function get Ekşi Sözlük debe page.
 
 **Returns**:
 
-- `Iterator[models.Debe]` - Entry data classes.
+- `Iterator[models.Debe]` _class_ - Entry data classes.
 
 <a id="limoon.core.get_search_topic"></a>
 
@@ -471,7 +472,21 @@ This function get Ekşi Sözlük search topic page.
 
 **Returns**:
 
-- `Iterator[models.SearchResult]` - SearchResult data classes.
+- `Iterator[models.SearchResult]` _class_ - SearchResult data classes.
+
+<a id="limoon.core.get_random_entry"></a>
+
+#### get\_random\_entry
+
+```python
+def get_random_entry() -> models.Entry
+```
+
+This function get random entry.
+
+**Returns**:
+
+- `models.Entry` _class_ - Entry data classes.
 
 <a id="limoon.constants"></a>
 
