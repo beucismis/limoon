@@ -48,17 +48,22 @@ def get_topic(
     if r.status_code == HTTPStatus.NOT_FOUND:
         raise exceptions.TopicNotFound()
 
-    h1 = r.html.find("h1#title", first=True)
-    path = h1.find("a", first=True).attrs["href"]
-    page_count = r.html.find("div.pager", first=True)
+    try:
+        h1 = r.html.find("h1#title", first=True)
+        path = h1.find("a", first=True).attrs["href"]
+        page_count = r.html.find("div.pager", first=True)
 
-    return models.Topic(
-        int(h1.attrs["data-id"]),
-        h1.attrs["data-title"],
-        path[1:],
-        utils.entry_parser(r.html, max_entry),
-        int(page_count.attrs["data-pagecount"]) if page_count else page_count,
-    )
+        return models.Topic(
+            int(h1.attrs["data-id"]),
+            h1.attrs["data-title"],
+            path[1:],
+            utils.entry_parser(r.html, max_entry),
+            int(page_count.attrs["data-pagecount"]) if page_count else page_count,
+        )
+    except AttributeError as e:
+        raise exceptions.ElementNotFound(
+            message=f"Failed to parse topic page: {e}", html=r.html.html
+        )
 
 
 def get_entry(entry_id: EntryID) -> models.Entry:
@@ -81,7 +86,12 @@ def get_entry(entry_id: EntryID) -> models.Entry:
     if r.html.find("h1", first=True).text == exceptions.SHIT_MESSAGE:
         raise exceptions.EntryNotFound()
 
-    return next(utils.entry_parser(r.html))
+    try:
+        return next(utils.entry_parser(r.html))
+    except AttributeError as e:
+        raise exceptions.ElementNotFound(
+            message=f"Failed to parse entry page: {e}", html=r.html.html
+        )
 
 
 def get_author(nickname: Nickname) -> models.Author:
@@ -99,25 +109,30 @@ def get_author(nickname: Nickname) -> models.Author:
     if r.status_code == HTTPStatus.NOT_FOUND:
         raise exceptions.AuthorNotFound()
 
-    nickname = r.html.find("h1#user-profile-title", first=True)
-    biography = r.html.find("div#profile-biography", first=True)
-    total_entry = r.html.find("span#entry-count-total", first=True)
-    follower_count = r.html.find("span#user-follower-count", first=True)
-    following_count = r.html.find("span#user-following-count", first=True)
-    record_date = r.html.find("div.recorddate", first=True)
-    avatar_url = r.html.find("img.avatar", first=True)
-    rank = r.html.find("p.muted", first=True)
+    try:
+        nickname = r.html.find("h1#user-profile-title", first=True)
+        biography = r.html.find("div#profile-biography", first=True)
+        total_entry = r.html.find("span#entry-count-total", first=True)
+        follower_count = r.html.find("span#user-follower-count", first=True)
+        following_count = r.html.find("span#user-following-count", first=True)
+        record_date = r.html.find("div.recorddate", first=True)
+        avatar_url = r.html.find("img.avatar", first=True)
+        rank = r.html.find("p.muted", first=True)
 
-    return models.Author(
-        nickname.attrs["data-nick"],
-        biography.text if biography else biography,
-        int(total_entry.text),
-        int(follower_count.text),
-        int(following_count.text),
-        record_date.text.title(),
-        avatar_url.attrs["src"],
-        rank,
-    )
+        return models.Author(
+            nickname.attrs["data-nick"],
+            biography.text if biography else biography,
+            int(total_entry.text),
+            int(follower_count.text),
+            int(following_count.text),
+            record_date.text.title(),
+            avatar_url.attrs["src"],
+            rank,
+        )
+    except AttributeError as e:
+        raise exceptions.ElementNotFound(
+            message=f"Failed to parse author page: {e}", html=r.html.html
+        )
 
 
 def get_author_rank(nickname: Nickname) -> models.Rank:
@@ -147,13 +162,18 @@ def get_author_badges(nickname: Nickname) -> Iterator[models.Badge]:
 
     r = request(constants.AUTHOT_BADGES_ROUTE.format(nickname))
 
-    for badge in r.html.find("li.badge-item-otheruser"):
-        if badge.attrs["data-owned"] != "False":
-            yield models.Badge(
-                badge.find("p", first=True).text,  # name
-                badge.find("a", first=True).attrs["data-title"],
-                badge.find("img", first=True).attrs["src"],
-            )
+    try:
+        for badge in r.html.find("li.badge-item-otheruser"):
+            if badge.attrs["data-owned"] != "False":
+                yield models.Badge(
+                    badge.find("p", first=True).text,  # name
+                    badge.find("a", first=True).attrs["data-title"],
+                    badge.find("img", first=True).attrs["src"],
+                )
+    except AttributeError as e:
+        raise exceptions.ElementNotFound(
+            message=f"Failed to parse author badges page: {e}", html=r.html.html
+        )
 
 
 def get_author_topic(nickname: Nickname) -> models.Topic:
@@ -172,17 +192,32 @@ def get_author_topic(nickname: Nickname) -> models.Topic:
 
 
 def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Iterator[models.Entry]:
-    """ """
+    """This function get Ekşi Sözlük author last entrys.
+
+    Arguments:
+    nickname (str): Unique author nickname.
+    page (int): Specific last entrys page.
+
+    Returns:
+    Iterator[models.Entry] (class): Entry data class.
+    """
 
     r = request(
         constants.AUTHOR_LAST_ENTRYS_ROUTE,
         params={"nick": nickname, "p": page},
     )
 
-    topic_list = r.html.find("div#topic", first=True).find("div.topic-item")
+    try:
+        topic_list = r.html.find("div#topic", first=True).find("div.topic-item")
 
-    for topic in topic_list:
-        yield get_entry(int(topic.find("li#entry-item", first=True).attrs["data-id"]))
+        for topic in topic_list:
+            yield get_entry(
+                int(topic.find("li#entry-item", first=True).attrs["data-id"])
+            )
+    except AttributeError as e:
+        raise exceptions.ElementNotFound(
+            message=f"Failed to parse author last entrys page: {e}", html=r.html.html
+        )
 
 
 def get_agenda(max_topic: Optional[int] = None) -> Iterator[models.Agenda]:
@@ -200,13 +235,18 @@ def get_agenda(max_topic: Optional[int] = None) -> Iterator[models.Agenda]:
     if r.status_code != HTTPStatus.OK:
         raise exceptions.TopicNotFound()
 
-    topic_list = r.html.find("ul.topic-list", first=True).find("a")
+    try:
+        topic_list = r.html.find("ul.topic-list", first=True).find("a")
 
-    for topic in topic_list[:max_topic]:
-        yield models.Agenda(
-            topic.text.rsplit(None, 1)[0] if " " in topic.text else "",
-            urlparse(topic.attrs["href"]).path.split("/")[-1],
-            topic.find("small", first=True).text,
+        for topic in topic_list[:max_topic]:
+            yield models.Agenda(
+                topic.text.rsplit(None, 1)[0] if " " in topic.text else "",
+                urlparse(topic.attrs["href"]).path.split("/")[-1],
+                topic.find("small", first=True).text,
+            )
+    except AttributeError as e:
+        raise exceptions.ElementNotFound(
+            message=f"Failed to parse agenda page: {e}", html=r.html.html
         )
 
 
@@ -222,12 +262,17 @@ def get_debe() -> Iterator[models.Debe]:
     if r.status_code != HTTPStatus.OK:
         raise exceptions.EntryNotFound()
 
-    entry_list = r.html.find("ul.topic-list", first=True).find("a")
+    try:
+        entry_list = r.html.find("ul.topic-list", first=True).find("a")
 
-    for entry in entry_list:
-        yield models.Debe(
-            entry.find("span.caption", first=True).text,
-            urlparse(entry.attrs["href"]).path.split("/")[-1],
+        for entry in entry_list:
+            yield models.Debe(
+                entry.find("span.caption", first=True).text,
+                urlparse(entry.attrs["href"]).path.split("/")[-1],
+            )
+    except AttributeError as e:
+        raise exceptions.ElementNotFound(
+            message=f"Failed to parse debe page: {e}", html=r.html.html
         )
 
 
@@ -255,11 +300,16 @@ def get_search_topic(keywords: SearchKeywords) -> Iterator[models.SearchResult]:
     if not topic_ul:
         raise exceptions.SearchResultNotFound()
 
-    topic_list = topic_ul.find("a")
+    try:
+        topic_list = topic_ul.find("a")
 
-    for topic in topic_list:
-        yield models.SearchResult(
-            topic.text.rsplit(None, 1)[0] if " " in topic.text else "",
-            urlparse(topic.attrs["href"]).path.split("/")[-1],
-            topic.find("small", first=True).text,
+        for topic in topic_list:
+            yield models.SearchResult(
+                topic.text.rsplit(None, 1)[0] if " " in topic.text else "",
+                urlparse(topic.attrs["href"]).path.split("/")[-1],
+                topic.find("small", first=True).text,
+            )
+    except AttributeError as e:
+        raise exceptions.ElementNotFound(
+            message=f"Failed to parse search topic page: {e}", html=r.html.html
         )
