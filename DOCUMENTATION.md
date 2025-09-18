@@ -18,6 +18,8 @@
   * [AuthorNotFound](#limoon.exceptions.AuthorNotFound)
   * [PageNotFound](#limoon.exceptions.PageNotFound)
   * [SearchResultNotFound](#limoon.exceptions.SearchResultNotFound)
+  * [HTMLParsingError](#limoon.exceptions.HTMLParsingError)
+  * [ElementNotFound](#limoon.exceptions.ElementNotFound)
 * [limoon.core](#limoon.core)
   * [get\_topic](#limoon.core.get_topic)
   * [get\_entry](#limoon.core.get_entry)
@@ -255,6 +257,26 @@ class SearchResultNotFound(Exception)
 
 Raised when no search results are found.
 
+<a id="limoon.exceptions.HTMLParsingError"></a>
+
+## HTMLParsingError Objects
+
+```python
+class HTMLParsingError(Exception)
+```
+
+Raised when an error occurs while parsing HTML.
+
+<a id="limoon.exceptions.ElementNotFound"></a>
+
+## ElementNotFound Objects
+
+```python
+class ElementNotFound(HTMLParsingError)
+```
+
+Raised when a required HTML element is not found.
+
 <a id="limoon.core"></a>
 
 # limoon.core
@@ -386,7 +408,17 @@ def get_author_last_entrys(nickname: Nickname,
                            page: int = 1) -> Iterator[models.Entry]
 ```
 
+This function get Ekşi Sözlük author last entrys.
 
+**Arguments**:
+
+- `nickname` _str_ - Unique author nickname.
+- `page` _int_ - Specific last entrys page.
+  
+
+**Returns**:
+
+- `Iterator[models.Entry]` _class_ - Entry data class.
 
 <a id="limoon.core.get_agenda"></a>
 
