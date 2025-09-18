@@ -1,3 +1,4 @@
+import random
 from http import HTTPStatus
 from typing import Callable, Iterator, Optional, TypeVar, Union
 from urllib.parse import urlparse
@@ -157,7 +158,7 @@ def get_author_badges(nickname: Nickname) -> Iterator[models.Badge]:
     nickname (str): Unique author nickname.
 
     Returns:
-    Iterator[models.Badge]: Badge data classes.
+    Iterator[models.Badge] (class): Badge data classes.
     """
 
     r = request(constants.AUTHOT_BADGES_ROUTE.format(nickname))
@@ -227,7 +228,7 @@ def get_agenda(max_topic: Optional[int] = None) -> Iterator[models.Agenda]:
     max_topic (int=None): Maximum number of topics get from agenda.
 
     Returns:
-    Iterator[models.Agenda]: Agenda data classes.
+    Iterator[models.Agenda] (class): Agenda data classes.
     """
 
     r = request(constants.AGENDA_ROUTE)
@@ -254,7 +255,7 @@ def get_debe() -> Iterator[models.Debe]:
     """This function get Ekşi Sözlük debe page.
 
     Returns:
-    Iterator[models.Debe]: Entry data classes.
+    Iterator[models.Debe] (class): Entry data classes.
     """
 
     r = request(constants.DEBE_ROUTE)
@@ -283,7 +284,7 @@ def get_search_topic(keywords: SearchKeywords) -> Iterator[models.SearchResult]:
     keywords (SearchKeywords): Search keywords.
 
     Returns:
-    Iterator[models.SearchResult]: SearchResult data classes.
+    Iterator[models.SearchResult] (class): SearchResult data classes.
     """
 
     r = request(
@@ -313,3 +314,13 @@ def get_search_topic(keywords: SearchKeywords) -> Iterator[models.SearchResult]:
         raise exceptions.ElementNotFound(
             message=f"Failed to parse search topic page: {e}", html=r.html.html
         )
+
+
+def get_random_entry() -> models.Entry:
+    """This function get random entry.
+
+    Returns:
+    models.Entry (class): Entry data classes.
+    """
+
+    return get_entry(random.randint(1, constants.TOTAL_ENTRY_COUNT))
