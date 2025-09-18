@@ -21,6 +21,7 @@ def entry_parser(html: HTML, max_entry: Optional[int] = None) -> Iterator[models
             int(item.attrs["data-id"]),
             author.text,
             content.text,
+            content.html,
             int(favorite_count),
             created.text,
             topic_title.attrs["data-title"],
