@@ -1,4 +1,5 @@
 from datetime import datetime
+from types import NoneType
 
 import pytest
 
@@ -27,7 +28,7 @@ class TestAPI:
         assert len(entrys) == 10
         assert topic.page_count > 1
         assert entrys[1].author_nickname == "hooker with a penis"
-        assert "linux çekirdektir." in entrys[1].content
+        assert "linux çekirdektir." in entrys[1].text
 
     def test_get_entry(self):
         entry = limoon.get_entry(1)
@@ -35,7 +36,8 @@ class TestAPI:
         assert type(entry) is limoon.Entry
         assert entry.id == 1
         assert entry.author_nickname == "ssg"
-        assert type(entry.content) is str
+        assert type(entry.text) is str
+        assert type(entry.html) is str
         assert entry.favorite_count > 1
         assert entry.topic_title == "pena"
         assert entry.topic_path == "pena--31782"
@@ -44,17 +46,18 @@ class TestAPI:
         assert entry.url == "https://eksisozluk.com/entry/1"
 
     def test_get_author(self):
-        author = limoon.get_author("ssg")
+        author = limoon.get_author("ekşisözlük")
 
         assert type(author) is limoon.Author
-        assert author.nickname == "ssg"
-        assert type(author.biography) is str
+        assert author.nickname == "ekşisözlük"
+        assert type(author.biography_text) is NoneType
+        assert type(author.biography_html) is NoneType
         assert author.total_entry > 1
         assert author.follower_count > 1
-        assert author.following_count > 1
+        assert author.following_count == 0
         assert author.record_date == "Şubat 1999"
         assert "https://img.ekstat.com" in author.avatar_url
-        assert author.url == "https://eksisozluk.com/biri/ssg"
+        assert author.url == "https://eksisozluk.com/biri/ekşisözlük"
 
     def test_get_author_rank(self):
         author_rank = limoon.get_author_rank("ssg")
