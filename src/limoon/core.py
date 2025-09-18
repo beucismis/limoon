@@ -62,7 +62,7 @@ def get_topic(
             h1.attrs["data-title"],
             path[1:],
             utils.entry_parser(r.html, max_entry),
-            int(page_count.attrs["data-pagecount"]) if page_count else page_count,
+            0 if page_count is None else int(page_count.attrs["data-pagecount"]),
         )
     except AttributeError as e:
         raise exceptions.ElementNotFound(
@@ -126,6 +126,7 @@ def get_author(nickname: Nickname) -> models.Author:
         return models.Author(
             nickname.attrs["data-nick"],
             biography.text if biography else biography,
+            biography.html if biography else biography,
             int(total_entry.text),
             int(follower_count.text),
             int(following_count.text),
