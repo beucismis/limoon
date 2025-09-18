@@ -17,6 +17,8 @@ AGENDA_ROUTE: Final = "/basliklar/gundem?_=1757793708867"
 DEBE_ROUTE: Final = "/debe"
 SEARCH_ROUTE: Final = "/basliklar/ara"
 
+TOTAL_ENTRY_COUNT = 300_000_000
+
 HEADERS = {
     "User-Agent": UserAgent().random,
     "X-Requested-With": "XMLHttpRequest",
