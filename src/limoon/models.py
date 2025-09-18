@@ -160,14 +160,14 @@ class Author:
     """
 
     nickname: str
-    biography_text: Union[str, None]
-    biography_html: Union[str, None]
+    biography_text: Optional[str]
+    biography_html: Optional[str]
     total_entry: int
     follower_count: int
     following_count: int
     record_date: str
     avatar_url: URL
-    rank: Union[Rank, None] = field(init=True)
+    rank: Optional[Rank] = field(init=True)
     badges: Iterator[Badge] = field(init=False)
     url: URL = field(init=False)
 
