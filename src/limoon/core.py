@@ -196,7 +196,9 @@ def get_author_topic(nickname: Nickname) -> models.Topic:
     return get_topic(urlparse(r.url).path[1:])
 
 
-def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Iterator[models.Entry]:
+def get_author_last_entrys(
+    nickname: Nickname, page: int = 1
+) -> Optional[Iterator[models.Entry]]:
     """This function get Ekşi Sözlük author last entrys.
 
     Arguments:
@@ -204,7 +206,7 @@ def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Iterator[models
     page (int): Specific last entrys page.
 
     Returns:
-    Iterator[models.Entry] (class): Entry data class.
+    Iterator[models.Entry] (class|None): Entry data class.
     """
 
     r = request(
@@ -213,9 +215,12 @@ def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Iterator[models
     )
 
     try:
-        topic_list = r.html.find("div#topic", first=True).find("div.topic-item")
+        topic_list = r.html.find("div#topic", first=True)
 
-        for topic in topic_list:
+        if topic_list is None:
+            return None
+
+        for topic in topic_list.find("div.topic-item"):
             yield get_entry(
                 int(topic.find("li#entry-item", first=True).attrs["data-id"])
             )
