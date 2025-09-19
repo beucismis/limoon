@@ -45,6 +45,12 @@ class TestAPI:
         assert entry.edited == False
         assert entry.url == "https://eksisozluk.com/entry/1"
 
+    def test_get_entry_image(self):
+        entry = limoon.get_entry(145946967)
+
+        assert entry.images[0] == "https://soz.lk/i/hw9d8bdw"
+        assert entry.images_source[0] == "https://cdn.eksisozluk.com/2022/12/5/h/hw9d8bdw.jpg"
+
     def test_get_author(self):
         author = limoon.get_author("ekşisözlük")
 

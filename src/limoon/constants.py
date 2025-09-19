@@ -5,6 +5,7 @@ from fake_useragent import UserAgent
 
 # Ekşi Sözlük Base URL
 BASE_URL = "https://eksisozluk.com"
+CDN_URL = "https://cdn.eksisozluk.com"
 
 # Ekşi Sözlük Routes
 TOPIC_ROUTE: Final = "/{}"
@@ -16,6 +17,7 @@ AUTHOR_LAST_ENTRYS_ROUTE = "/son-entryleri"
 AGENDA_ROUTE: Final = "/basliklar/gundem?_=1757793708867"
 DEBE_ROUTE: Final = "/debe"
 SEARCH_ROUTE: Final = "/basliklar/ara"
+IMAGE_ROUTE: Final = CDN_URL + "/{}/{}/{}/{}/{}.jpg"
 
 TOTAL_ENTRY_COUNT = 300_000_000
 

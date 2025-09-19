@@ -30,9 +30,7 @@ def request(endpoint: str, headers: dict = {}, params: dict = {}) -> requests.Re
     )
 
 
-def get_topic(
-    topic_keywords: TopicKeywords, page: int = 1, max_entry: Optional[int] = None
-) -> models.Topic:
+def get_topic(topic_keywords: TopicKeywords, page: int = 1, max_entry: Optional[int] = None) -> models.Topic:
     """This function get Ekşi Sözlük topic.
 
     Arguments:
@@ -65,9 +63,7 @@ def get_topic(
             0 if page_count is None else int(page_count.attrs["data-pagecount"]),
         )
     except AttributeError as e:
-        raise exceptions.ElementNotFound(
-            message=f"Failed to parse topic page: {e}", html=r.html.html
-        )
+        raise exceptions.ElementNotFound(message=f"Failed to parse topic page: {e}", html=r.html.html)
 
 
 def get_entry(entry_id: EntryID) -> models.Entry:
@@ -93,9 +89,7 @@ def get_entry(entry_id: EntryID) -> models.Entry:
     try:
         return next(utils.entry_parser(r.html))
     except AttributeError as e:
-        raise exceptions.ElementNotFound(
-            message=f"Failed to parse entry page: {e}", html=r.html.html
-        )
+        raise exceptions.ElementNotFound(message=f"Failed to parse entry page: {e}", html=r.html.html)
 
 
 def get_author(nickname: Nickname) -> models.Author:
@@ -135,9 +129,7 @@ def get_author(nickname: Nickname) -> models.Author:
             rank,
         )
     except AttributeError as e:
-        raise exceptions.ElementNotFound(
-            message=f"Failed to parse author page: {e}", html=r.html.html
-        )
+        raise exceptions.ElementNotFound(message=f"Failed to parse author page: {e}", html=r.html.html)
 
 
 def get_author_rank(nickname: Nickname) -> models.Rank:
@@ -176,9 +168,7 @@ def get_author_badges(nickname: Nickname) -> Iterator[models.Badge]:
                     badge.find("img", first=True).attrs["src"],
                 )
     except AttributeError as e:
-        raise exceptions.ElementNotFound(
-            message=f"Failed to parse author badges page: {e}", html=r.html.html
-        )
+        raise exceptions.ElementNotFound(message=f"Failed to parse author badges page: {e}", html=r.html.html)
 
 
 def get_author_topic(nickname: Nickname) -> models.Topic:
@@ -196,9 +186,7 @@ def get_author_topic(nickname: Nickname) -> models.Topic:
     return get_topic(urlparse(r.url).path[1:])
 
 
-def get_author_last_entrys(
-    nickname: Nickname, page: int = 1
-) -> Optional[Iterator[models.Entry]]:
+def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Optional[Iterator[models.Entry]]:
     """This function get Ekşi Sözlük author last entrys.
 
     Arguments:
@@ -221,13 +209,9 @@ def get_author_last_entrys(
             return None
 
         for topic in topic_list.find("div.topic-item"):
-            yield get_entry(
-                int(topic.find("li#entry-item", first=True).attrs["data-id"])
-            )
+            yield get_entry(int(topic.find("li#entry-item", first=True).attrs["data-id"]))
     except AttributeError as e:
-        raise exceptions.ElementNotFound(
-            message=f"Failed to parse author last entrys page: {e}", html=r.html.html
-        )
+        raise exceptions.ElementNotFound(message=f"Failed to parse author last entrys page: {e}", html=r.html.html)
 
 
 def get_agenda(max_topic: Optional[int] = None) -> Iterator[models.Agenda]:
@@ -255,9 +239,7 @@ def get_agenda(max_topic: Optional[int] = None) -> Iterator[models.Agenda]:
                 topic.find("small", first=True).text,
             )
     except AttributeError as e:
-        raise exceptions.ElementNotFound(
-            message=f"Failed to parse agenda page: {e}", html=r.html.html
-        )
+        raise exceptions.ElementNotFound(message=f"Failed to parse agenda page: {e}", html=r.html.html)
 
 
 def get_debe() -> Iterator[models.Debe]:
@@ -281,9 +263,7 @@ def get_debe() -> Iterator[models.Debe]:
                 urlparse(entry.attrs["href"]).path.split("/")[-1],
             )
     except AttributeError as e:
-        raise exceptions.ElementNotFound(
-            message=f"Failed to parse debe page: {e}", html=r.html.html
-        )
+        raise exceptions.ElementNotFound(message=f"Failed to parse debe page: {e}", html=r.html.html)
 
 
 def get_search_topic(keywords: SearchKeywords) -> Iterator[models.SearchResult]:
@@ -320,9 +300,7 @@ def get_search_topic(keywords: SearchKeywords) -> Iterator[models.SearchResult]:
                 topic.find("small", first=True).text,
             )
     except AttributeError as e:
-        raise exceptions.ElementNotFound(
-            message=f"Failed to parse search topic page: {e}", html=r.html.html
-        )
+        raise exceptions.ElementNotFound(message=f"Failed to parse search topic page: {e}", html=r.html.html)
 
 
 def get_random_entry() -> models.Entry:

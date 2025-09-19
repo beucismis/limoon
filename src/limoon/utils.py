@@ -1,9 +1,19 @@
+import re
 from typing import Iterator, Optional
 from urllib.parse import urlparse
 
 from requests_html import HTML
 
 from . import models
+
+
+def find_image_url(html: str) -> Optional[list]:
+    pattern = r'href="(https://soz\.lk/i/[a-zA-Z0-9]+)"'
+    matches = re.findall(pattern, html)
+
+    if matches:
+        return matches
+    return None
 
 
 def entry_parser(html: HTML, max_entry: Optional[int] = None) -> Iterator[models.Entry]:
@@ -26,4 +36,5 @@ def entry_parser(html: HTML, max_entry: Optional[int] = None) -> Iterator[models
             created.text,
             topic_title.attrs["data-title"],
             urlparse(topic_path).path.split("/")[-1],
+            find_image_url(content.html),
         )

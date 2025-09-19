@@ -36,6 +36,7 @@ path = "src/limoon/__about__.py"
 dependencies = ["pytest", "pydoc-markdown"]
 
 [tool.hatch.envs.default.scripts]
+format = "black . -l 120"
 test = "pytest tests/* -v"
 doc = "pydoc-markdown -I src --render-toc > DOCUMENTATION.md"
 

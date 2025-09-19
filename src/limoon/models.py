@@ -1,7 +1,10 @@
 import re
+from urllib.parse import urlparse
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Callable, Iterator, Optional, TypeVar, Union
+
+from curl_cffi import const
 
 from . import constants, core
 
@@ -23,6 +26,8 @@ class Entry:
     date (str): Entry sting date.
     topic_title (str): Entry topic title.
     topic_path (str): Unique entry topic path.
+    images (list|None): Entry images.
+    images_source (list|None): Entry images source.
     created (datetime): Datetime object of create entry.
     edited (datetime|bool): Datetime object of edit entry.
     url (str): Entry HTTP link.
@@ -36,6 +41,8 @@ class Entry:
     date: str
     topic_title: str
     topic_path: str
+    images: Optional[list[URL]]
+    images_source: Optional[list[URL]] = field(init=False)
     created: datetime = field(init=False)
     edited: Union[datetime, bool] = field(init=False)
     url: URL = field(init=False)
@@ -46,6 +53,23 @@ class Entry:
     def __post_init__(self):
         self.created, self.edited = self._parse_datetime(self.date)
         self.url = constants.BASE_URL + constants.ENTRY_ROUTE.format(self.id)
+        self.images_source = self._conver_image_url() if self.images else None
+
+    def _conver_image_url(self) -> list[URL]:
+        images_source = []
+
+        for url in self.images:
+            image_id = urlparse(url).path.split("/")[-1]
+            source_url = constants.IMAGE_ROUTE.format(
+                self.created.year,
+                self.created.month,
+                self.created.day,
+                image_id[0],
+                image_id,
+            )
+            images_source.append(source_url)
+
+        return images_source
 
     def _parse_datetime(self, stuff: str) -> tuple[datetime, Union[datetime, bool]]:
         def parse_single(value: str) -> datetime:
@@ -73,9 +97,7 @@ class Entry:
             except ValueError:
                 edited = datetime.strptime(edited_str, "%d.%m.%Y")
         else:
-            edited = datetime.strptime(
-                f"{created.strftime('%d.%m.%Y')} {edited_str}", "%d.%m.%Y %H:%M"
-            )
+            edited = datetime.strptime(f"{created.strftime('%d.%m.%Y')} {edited_str}", "%d.%m.%Y %H:%M")
 
         return created, edited
 
