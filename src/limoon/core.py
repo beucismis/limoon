@@ -30,12 +30,18 @@ def request(endpoint: str, headers: dict = {}, params: dict = {}) -> requests.Re
     )
 
 
-def get_topic(topic_keywords: TopicKeywords, page: int = 1, max_entry: Optional[int] = None) -> models.Topic:
+def get_topic(
+    topic_keywords: TopicKeywords,
+    page: int = 1,
+    a: Optional[str] = None,
+    max_entry: Optional[int] = None,
+) -> models.Topic:
     """This function get Ekşi Sözlük topic.
 
     Arguments:
     topic_keywords (str): Keywords (or path) of topic to be get.
     page (int=1): Specific topic page.
+    a (str|None): Nice or popular.
     max_entry (int|None): Max entry per topic.
 
     Returns:
@@ -45,7 +51,15 @@ def get_topic(topic_keywords: TopicKeywords, page: int = 1, max_entry: Optional[
     if not isinstance(page, int):
         raise TypeError
 
-    r = request(constants.TOPIC_ROUTE.format(topic_keywords), params={"p": page})
+    params = {"p": page}
+
+    if a in ("nice", "popular"):
+        params["a"] = a
+
+    r = request(
+        constants.TOPIC_ROUTE.format(topic_keywords),
+        params=params,
+    )
 
     if r.status_code == HTTPStatus.NOT_FOUND:
         raise exceptions.TopicNotFound()
@@ -214,17 +228,18 @@ def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Optional[Iterat
         raise exceptions.ElementNotFound(message=f"Failed to parse author last entrys page: {e}", html=r.html.html)
 
 
-def get_agenda(max_topic: Optional[int] = None) -> Iterator[models.Agenda]:
+def get_agenda(max_topic: Optional[int] = None, page: int = 1) -> Iterator[models.Agenda]:
     """This function get Ekşi Sözlük agenda (gündem) page.
 
     Arguments:
     max_topic (int=None): Maximum number of topics get from agenda.
+    page (int=1): Specific topic agenda page.
 
     Returns:
     Iterator[models.Agenda] (class): Agenda data classes.
     """
 
-    r = request(constants.AGENDA_ROUTE)
+    r = request(constants.AGENDA_ROUTE, params={"p": page})
 
     if r.status_code != HTTPStatus.OK:
         raise exceptions.TopicNotFound()
