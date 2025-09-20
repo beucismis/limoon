@@ -33,7 +33,7 @@ def request(endpoint: str, headers: dict = {}, params: dict = {}) -> requests.Re
 def get_topic(
     topic_keywords: TopicKeywords,
     page: int = 1,
-    a: Optional[str] = None,
+    action: Optional[str] = None,
     max_entry: Optional[int] = None,
 ) -> models.Topic:
     """This function get Ekşi Sözlük topic.
@@ -41,7 +41,7 @@ def get_topic(
     Arguments:
     topic_keywords (str): Keywords (or path) of topic to be get.
     page (int=1): Specific topic page.
-    a (str|None): Nice or popular.
+    action (str|None): Nice or popular.
     max_entry (int|None): Max entry per topic.
 
     Returns:
@@ -53,8 +53,8 @@ def get_topic(
 
     params = {"p": page}
 
-    if a in ("nice", "popular"):
-        params["a"] = a
+    if action in ("nice", "popular"):
+        params["a"] = action
 
     r = request(
         constants.TOPIC_ROUTE.format(topic_keywords),
@@ -310,9 +310,9 @@ def get_search_topic(keywords: SearchKeywords) -> Iterator[models.SearchResult]:
 
         for topic in topic_list:
             yield models.SearchResult(
-                topic.text.rsplit(None, 1)[0] if " " in topic.text else "",
+                topic.element.xpath("text()")[0].strip(),
                 urlparse(topic.attrs["href"]).path.split("/")[-1],
-                topic.find("small", first=True).text,
+                topic.find("small", first=True).text if topic.find("small", first=True) else None,
             )
     except AttributeError as e:
         raise exceptions.ElementNotFound(message=f"Failed to parse search topic page: {e}", html=r.html.html)
