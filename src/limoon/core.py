@@ -35,6 +35,7 @@ def get_topic(
     page: int = 1,
     action: Optional[str] = None,
     day: Optional[str] = None,
+    author: Optional[str] = None,
     max_entry: Optional[int] = None,
 ) -> models.Topic:
     """This function get Ekşi Sözlük topic.
@@ -44,6 +45,7 @@ def get_topic(
     page (int=1): Specific topic page.
     action (str|None): Nice or popular.
     day (str|None): Specific entry day.
+    author (str|None): Specific author nickname.
     max_entry (int|None): Max entry per topic.
 
     Returns:
@@ -55,11 +57,14 @@ def get_topic(
 
     params = {"p": page}
 
-    if action in ("nice", "popular"):
+    if action in ("nice", "popular", "search"):
         params["a"] = action
 
     if day:
         params["day"] = day
+
+    if author:
+        params["author"] = author
 
     r = request(
         constants.TOPIC_ROUTE.format(topic_keywords),
@@ -262,7 +267,7 @@ def get_agenda(max_topic: Optional[int] = None, page: int = 1) -> Iterator[model
                 is_pinned = False
 
             yield models.Agenda(
-                topic.text.rsplit(None, 1)[0] if " " in topic.text else "",
+                topic.element.xpath("text()")[0].strip(),
                 urlparse(topic.attrs["href"]).path.split("/")[-1],
                 is_pinned,
                 topic.find("small", first=True).text,
@@ -342,29 +347,28 @@ def get_random_entry() -> models.Entry:
     return get_entry(random.randint(1, constants.TOTAL_ENTRY_COUNT))
 
 
-def get_channel(name: str, max_topic: Optional[int] = None) -> Iterator[models.ChannelTopic]:
+def get_channel(path: str, max_topic: Optional[int] = None) -> Iterator[models.ChannelTopic]:
     """This function get channel topics.
 
     Arguments:
-    name (str): Channel name.
+    path (str): Channel path.
     max_topic (int|None): Maximum number of topics get from agenda.
 
     Returns:
     Iterator[models.ChannelTopic (class): ChannelTopic data classes.
     """
 
-    if not name in [channel.name for channel in constants.CHANNELS]:
+    if not path in [channel.path for channel in constants.CHANNELS]:
         raise exceptions.ChannelNotFound()
 
-    r = request(constants.CHANNEL_ROUTE.format(name))
+    r = request(constants.CHANNEL_ROUTE.format(path))
 
     try:
         topic_list = r.html.find("ul.topic-list", first=True).find("a")
 
         for topic in topic_list[:max_topic]:
             yield models.ChannelTopic(
-                name,
-                topic.text.rsplit(None, 1)[0] if " " in topic.text else "",
+                topic.element.xpath("text()")[0].strip(),
                 urlparse(topic.attrs["href"]).path.split("/")[-1],
                 urlparse(topic.attrs["href"]).query.split("=")[-1],
                 topic.find("small", first=True).text if topic.find("small", first=True) else None,

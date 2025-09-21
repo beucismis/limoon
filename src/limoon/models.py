@@ -313,7 +313,6 @@ class ChannelTopic:
     url (URL): Topic HTTP link.
     """
 
-    channel_name: str
     title: str
     path: str
     day: Optional[str] = None
