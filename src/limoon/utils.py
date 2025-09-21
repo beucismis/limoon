@@ -26,6 +26,8 @@ def entry_parser(html: HTML, max_entry: Optional[int] = None) -> Iterator[models
         created = item.find("a.entry-date", first=True)
         topic_title = html.find("h1#title", first=True)
         topic_path = topic_title.find("a", first=True).attrs["href"]
+        is_pinned = item.attrs["data-ispinned"]
+        is_pinned_on_profile = item.attrs["data-ispinnedonprofile"]
 
         yield models.Entry(
             int(item.attrs["data-id"]),
@@ -36,5 +38,7 @@ def entry_parser(html: HTML, max_entry: Optional[int] = None) -> Iterator[models
             created.text,
             topic_title.attrs["data-title"],
             urlparse(topic_path).path.split("/")[-1],
+            True if is_pinned == "true" else False,
+            True if is_pinned_on_profile == "true" else False,
             find_image_url(content.html),
         )

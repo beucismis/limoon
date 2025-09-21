@@ -41,6 +41,8 @@ class TestAPI:
         assert entry.favorite_count > 1
         assert entry.topic_title == "pena"
         assert entry.topic_path == "pena--31782"
+        assert entry.is_pinned == False
+        assert entry.is_pinned_on_profile == False
         assert entry.created == datetime.strptime("15.02.1999", "%d.%m.%Y")
         assert entry.edited == False
         assert entry.url == "https://eksisozluk.com/entry/1"

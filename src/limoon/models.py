@@ -24,6 +24,8 @@ class Entry:
     date (str): Entry sting date.
     topic_title (str): Entry topic title.
     topic_path (str): Unique entry topic path.
+    is_pinned (bool): Entry pinned status.
+    is_pinned_on_profile (bool): Entry pinned on profile status.
     images (list|None): Entry images.
     images_source (list|None): Entry images source.
     created (datetime): Datetime object of create entry.
@@ -39,6 +41,8 @@ class Entry:
     date: str
     topic_title: str
     topic_path: str
+    is_pinned: bool
+    is_pinned_on_profile: bool
     images: Optional[list[URL]]
     images_source: Optional[list[URL]] = field(init=False)
     created: datetime = field(init=False)
