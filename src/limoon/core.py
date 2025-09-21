@@ -34,6 +34,7 @@ def get_topic(
     topic_keywords: TopicKeywords,
     page: int = 1,
     action: Optional[str] = None,
+    day: Optional[str] = None,
     max_entry: Optional[int] = None,
 ) -> models.Topic:
     """This function get Ekşi Sözlük topic.
@@ -42,6 +43,7 @@ def get_topic(
     topic_keywords (str): Keywords (or path) of topic to be get.
     page (int=1): Specific topic page.
     action (str|None): Nice or popular.
+    day (str|None): Specific entry day.
     max_entry (int|None): Max entry per topic.
 
     Returns:
@@ -55,6 +57,9 @@ def get_topic(
 
     if action in ("nice", "popular"):
         params["a"] = action
+
+    if day:
+        params["day"] = day
 
     r = request(
         constants.TOPIC_ROUTE.format(topic_keywords),
@@ -177,7 +182,7 @@ def get_author_badges(nickname: Nickname) -> Iterator[models.Badge]:
         for badge in r.html.find("li.badge-item-otheruser"):
             if badge.attrs["data-owned"] != "False":
                 yield models.Badge(
-                    badge.find("p", first=True).text,  # name
+                    badge.find("p", first=True).text,
                     badge.find("a", first=True).attrs["data-title"],
                     badge.find("img", first=True).attrs["src"],
                 )
@@ -205,7 +210,7 @@ def get_author_last_entrys(nickname: Nickname, page: int = 1) -> Optional[Iterat
 
     Arguments:
     nickname (str): Unique author nickname.
-    page (int): Specific last entrys page.
+    page (int=1): Specific last entrys page.
 
     Returns:
     Iterator[models.Entry] (class|None): Entry data class.
@@ -232,7 +237,7 @@ def get_agenda(max_topic: Optional[int] = None, page: int = 1) -> Iterator[model
     """This function get Ekşi Sözlük agenda (gündem) page.
 
     Arguments:
-    max_topic (int=None): Maximum number of topics get from agenda.
+    max_topic (int|None): Maximum number of topics get from agenda.
     page (int=1): Specific topic agenda page.
 
     Returns:
@@ -326,3 +331,34 @@ def get_random_entry() -> models.Entry:
     """
 
     return get_entry(random.randint(1, constants.TOTAL_ENTRY_COUNT))
+
+
+def get_channel(name: str, max_topic: Optional[int] = None) -> Iterator[models.ChannelTopic]:
+    """This function get channel topics.
+
+    Arguments:
+    name (str): Channel name.
+    max_topic (int|None): Maximum number of topics get from agenda.
+
+    Returns:
+    Iterator[models.ChannelTopic (class): ChannelTopic data classes.
+    """
+
+    if not name in [channel.name for channel in constants.CHANNELS]:
+        raise exceptions.ChannelNotFound()
+
+    r = request(constants.CHANNEL_ROUTE.format(name))
+
+    try:
+        topic_list = r.html.find("ul.topic-list", first=True).find("a")
+
+        for topic in topic_list[:max_topic]:
+            yield models.ChannelTopic(
+                name,
+                topic.text.rsplit(None, 1)[0] if " " in topic.text else "",
+                urlparse(topic.attrs["href"]).path.split("/")[-1],
+                urlparse(topic.attrs["href"]).query.split("=")[-1],
+                topic.find("small", first=True).text if topic.find("small", first=True) else None,
+            )
+    except AttributeError as e:
+        raise exceptions.ElementNotFound(message=f"Failed to parse channel page: {e}", html=r.html.html)

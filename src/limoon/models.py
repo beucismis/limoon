@@ -4,9 +4,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Callable, Iterator, Optional, TypeVar, Union
 
-from curl_cffi import const
-
-from . import constants, core
+from . import constants
 
 
 # Typings
@@ -177,7 +175,6 @@ class Author:
     record_date (str): Author record date.
     avatar_url (str): Author avatar HTTP link.
     rank (class): Author rank.
-    badges (class): Author badges.
     url (str): Author HTTP link.
     """
 
@@ -190,7 +187,6 @@ class Author:
     record_date: str
     avatar_url: URL
     rank: Optional[Rank] = field(init=True)
-    badges: Iterator[Badge] = field(init=False)
     url: URL = field(init=False)
 
     def __repr__(self):
@@ -198,7 +194,6 @@ class Author:
 
     def __post_init__(self):
         self.rank = self._parse_rank(self.rank)
-        self.badges = core.get_author_badges(self.nickname)
         self.url = constants.BASE_URL + constants.AUTHOR_ROUTE.format(self.nickname)
 
     def _parse_rank(self, stuff: Union[Rank, None]) -> Union[Rank, None]:
@@ -270,6 +265,55 @@ class SearchResult:
 
     def __repr__(self):
         return f"SearchResult({self.title})"
+
+    def __post_init__(self):
+        self.url = constants.BASE_URL + constants.TOPIC_ROUTE.format(self.path)
+
+
+@dataclass
+class Channel:
+    """Channel data class.
+
+    Arguments:
+    name (str): Channel name.
+    description (int): Channel description.
+    path (str|None): Unique channel path.
+    url (URL): Channel HTTP link.
+    """
+
+    name: str
+    description: str
+    path: URL
+    url: URL = field(init=False)
+
+    def __repr__(self):
+        return f"Channel({self.name})"
+
+    def __post_init__(self):
+        self.url = constants.BASE_URL + constants.CHANNEL_ROUTE.format(self.path)
+
+
+@dataclass
+class ChannelTopic:
+    """ChannelTopic data class.
+
+    Arguments:
+    title (str): Topic title.
+    path (int): Unique topic path.
+    day (str|None): Specific entry day.
+    entry_count (str): Topic total entry count.
+    url (URL): Topic HTTP link.
+    """
+
+    channel_name: str
+    title: str
+    path: str
+    day: Optional[str] = None
+    entry_count: Optional[str] = None
+    url: URL = field(init=False)
+
+    def __repr__(self):
+        return f"ChannelTopic({self.title})"
 
     def __post_init__(self):
         self.url = constants.BASE_URL + constants.TOPIC_ROUTE.format(self.path)

@@ -25,6 +25,10 @@ class SearchResultNotFound(Exception):
     """Raised when no search results are found."""
 
 
+class ChannelNotFound(Exception):
+    """The channel name is not available."""
+
+
 class HTMLParsingError(Exception):
     """Raised when an error occurs while parsing HTML."""
 
