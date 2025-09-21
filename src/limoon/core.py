@@ -73,12 +73,14 @@ def get_topic(
         h1 = r.html.find("h1#title", first=True)
         path = h1.find("a", first=True).attrs["href"]
         page_count = r.html.find("div.pager", first=True)
+        pinned_entry = r.html.find("div#pinned-entry", first=True)
 
         return models.Topic(
             int(h1.attrs["data-id"]),
             h1.attrs["data-title"],
             path[1:],
             utils.entry_parser(r.html, max_entry),
+            utils.pinned_entry_parser(r.html, pinned_entry) if pinned_entry else False,
             0 if page_count is None else int(page_count.attrs["data-pagecount"]),
         )
     except AttributeError as e:
@@ -253,11 +255,17 @@ def get_agenda(max_topic: Optional[int] = None, page: int = 1) -> Iterator[model
         topic_list = r.html.find("ul.topic-list", first=True).find("a")
 
         for topic in topic_list[:max_topic]:
+            try:
+                a_class = topic.attrs["class"]
+                is_pinned = True if a_class == "pinned" else False
+            except KeyError:
+                is_pinned = False
+
             yield models.Agenda(
                 topic.text.rsplit(None, 1)[0] if " " in topic.text else "",
                 urlparse(topic.attrs["href"]).path.split("/")[-1],
+                is_pinned,
                 topic.find("small", first=True).text,
-                True if topic.attrs["class"] == "pinned" else False,
             )
     except AttributeError as e:
         raise exceptions.ElementNotFound(message=f"Failed to parse agenda page: {e}", html=r.html.html)

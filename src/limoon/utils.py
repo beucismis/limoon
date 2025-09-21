@@ -17,7 +17,10 @@ def find_image_url(html: str) -> Optional[list]:
 
 
 def entry_parser(html: HTML, max_entry: Optional[int] = None) -> Iterator[models.Entry]:
-    entry_items = html.find("ul#entry-item-list", first=True).find("li#entry-item")
+    try:
+        entry_items = html.find("ul#entry-item-list", first=True).find("li#entry-item")
+    except AttributeError:
+        entry_items = html.find("li#entry-item")
 
     for item in entry_items[:max_entry]:
         author = item.find("a.entry-author", first=True)
@@ -42,3 +45,30 @@ def entry_parser(html: HTML, max_entry: Optional[int] = None) -> Iterator[models
             True if is_pinned_on_profile == "true" else False,
             find_image_url(content.html),
         )
+
+
+def pinned_entry_parser(topic: HTML, entry: HTML) -> models.Entry:
+    entry_item = entry.find("li#entry-item", first=True)
+
+    author = entry_item.find("a.entry-author", first=True)
+    content = entry_item.find("div.content", first=True)
+    favorite_count = entry_item.attrs["data-favorite-count"]
+    created = entry_item.find("a.entry-date", first=True)
+    topic_title = topic.find("h1#title", first=True)
+    topic_path = topic_title.find("a", first=True).attrs["href"]
+    is_pinned = entry_item.attrs["data-ispinned"]
+    is_pinned_on_profile = entry_item.attrs["data-ispinnedonprofile"]
+
+    return models.Entry(
+        int(entry_item.attrs["data-id"]),
+        author.text,
+        content.text,
+        content.html,
+        int(favorite_count),
+        created.text,
+        topic_title.attrs["data-title"],
+        urlparse(topic_path).path.split("/")[-1],
+        True if is_pinned == "true" else False,
+        True if is_pinned_on_profile == "true" else False,
+        find_image_url(content.html),
+    )

@@ -113,6 +113,7 @@ class Topic:
     title (str): Topic title.
     path (str): Unique topic path.
     entrys (Iterator[Entry]): Topic total entrys per page.
+    pinned_entry (Union[Entry|bool]): Topic pinned entry.
     page_count (int): Topic total page count.
     url (str): Topic HTTP link.
     """
@@ -121,6 +122,7 @@ class Topic:
     title: str
     path: str
     entrys: Iterator[Entry]
+    pinned_entry: Union[Entry, bool]
     page_count: int
     url: URL = field(init=False)
 
@@ -214,15 +216,15 @@ class Agenda:
     Arguments:
     title (str): Topic title.
     path (int): Unique topic path.
-    entry_count (str): Topic total entry count.
     is_pinned (bool): Topic pinned status.
+    entry_count (str): Topic total entry count.
     url (URL): Topic HTTP link.
     """
 
     title: str
     path: str
-    entry_count: Optional[str] = None
     is_pinned: bool
+    entry_count: Optional[str] = None
     url: URL = field(init=False)
 
     def __repr__(self):
