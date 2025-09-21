@@ -257,6 +257,7 @@ def get_agenda(max_topic: Optional[int] = None, page: int = 1) -> Iterator[model
                 topic.text.rsplit(None, 1)[0] if " " in topic.text else "",
                 urlparse(topic.attrs["href"]).path.split("/")[-1],
                 topic.find("small", first=True).text,
+                True if topic.attrs["class"] == "pinned" else False,
             )
     except AttributeError as e:
         raise exceptions.ElementNotFound(message=f"Failed to parse agenda page: {e}", html=r.html.html)

@@ -215,12 +215,14 @@ class Agenda:
     title (str): Topic title.
     path (int): Unique topic path.
     entry_count (str): Topic total entry count.
+    is_pinned (bool): Topic pinned status.
     url (URL): Topic HTTP link.
     """
 
     title: str
     path: str
     entry_count: Optional[str] = None
+    is_pinned: bool
     url: URL = field(init=False)
 
     def __repr__(self):
