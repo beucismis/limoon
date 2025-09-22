@@ -57,7 +57,7 @@ def get_topic(
 
     params = {"p": page}
 
-    if action in ("nice", "popular", "search"):
+    if action in ("nice", "dailynice", "popular", "search"):
         params["a"] = action
 
     if day:
